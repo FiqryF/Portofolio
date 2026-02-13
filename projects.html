@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | Alex Rivera</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            bg: '#0a0a0a',
+                            surface: '#121212',
+                            primary: '#3b82f6',
+                            secondary: '#8b5cf6',
+                            accent: '#ec4899'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                    },
+                    animation: {
+                        'gradient-x': 'gradient-x 15s ease infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': { 'background-size': '200% 200%', 'background-position': 'left center' },
+                            '50%': { 'background-size': '200% 200%', 'background-position': 'right center' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        body.loaded {
+            opacity: 1;
+        }
+
+        /* Moving Background */
+        .animated-bg {
+            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #111827);
+            background-size: 400% 400%;
+            animation: gradient-x 15s ease infinite;
+        }
+
+        /* Glass Effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Floating Particles */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            animation: float 10s infinite;
+            z-index: 0;
+        }
+    </style>
+</head>
+
+<body class="antialiased animated-bg min-h-screen relative">
+    <!-- Particles Container -->
+    <div id="particles" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+                <span class="w-2 h-6 bg-purple-500 rounded-full"></span>
+                AR.
+            </a>
+            <div class="hidden md:flex items-center space-x-8 text-sm font-medium tracking-wide">
+                <a href="index.html" class="text-gray-400 hover:text-white transition-colors transition-link">Home</a>
+                <a href="about.html" class="text-gray-400 hover:text-white transition-colors transition-link">About</a>
+                <a href="skills.html"
+                    class="text-gray-400 hover:text-white transition-colors transition-link">Skills</a>
+                <a href="projects.html" class="text-white font-bold transition-link">Projects</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Projects Section -->
+    <section class="min-h-screen pt-32 pb-20 container mx-auto px-6 relative z-10">
+        <div class="mb-14 flex flex-col md:flex-row md:items-end justify-between gap-6 reveal">
+            <div>
+                <span class="text-purple-400 font-medium tracking-widest uppercase text-sm">Portfolio</span>
+                <h2 class="text-4xl font-bold text-white mt-3">Selected Works</h2>
+            </div>
+
+            <!-- Filters -->
+            <div class="flex flex-wrap gap-2" id="portfolio-filters">
+                <button
+                    class="filter-btn active px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 bg-white text-black hover:shadow-lg hover:shadow-white/20"
+                    data-filter="all">All</button>
+                <button
+                    class="filter-btn px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 bg-white/5 border border-white/20 text-gray-300 hover:text-white hover:bg-white/10 hover:border-white/40"
+                    data-filter="coding">Coding</button>
+                <button
+                    class="filter-btn px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 bg-white/5 border border-white/20 text-gray-300 hover:text-white hover:bg-white/10 hover:border-white/40"
+                    data-filter="design">Design</button>
+                <button
+                    class="filter-btn px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 bg-white/5 border border-white/20 text-gray-300 hover:text-white hover:bg-white/10 hover:border-white/40"
+                    data-filter="photo">Photography</button>
+            </div>
+        </div>
+
+        <!-- Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-left pb-20" id="projects-grid">
+
+            <!-- Project 1 -->
+            <article class="project-item group reveal" data-category="coding">
+                <div class="glass-card rounded-2xl overflow-hidden relative aspect-[4/3] mb-5 cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                        alt="Dashboard"
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100">
+                    <div
+                        class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <span
+                            class="px-6 py-2 bg-white text-black rounded-full font-medium text-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">View
+                            Project</span>
+                    </div>
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span class="text-xs font-bold text-blue-400 uppercase tracking-wider mb-1 block">Coding</span>
+                        <h3 class="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">
+                            Neo-Dashboard</h3>
+                        <p class="text-gray-400 text-sm mt-2 line-clamp-2">A React admin dashboard with real-time data
+                            visualization and dark mode support.</p>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Project 2 -->
+            <article class="project-item group reveal" data-category="design">
+                <div class="glass-card rounded-2xl overflow-hidden relative aspect-[4/3] mb-5 cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                        alt="App Design"
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100">
+                    <div
+                        class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <span
+                            class="px-6 py-2 bg-white text-black rounded-full font-medium text-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">View
+                            Project</span>
+                    </div>
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span class="text-xs font-bold text-pink-400 uppercase tracking-wider mb-1 block">Design</span>
+                        <h3 class="text-xl font-bold text-white group-hover:text-pink-400 transition-colors">Mobile
+                            Banking UI</h3>
+                        <p class="text-gray-400 text-sm mt-2 line-clamp-2">Clean, minimal styling for a fintech mobile
+                            application focused on usability.</p>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Project 3 -->
+            <article class="project-item group reveal" data-category="photo">
+                <div class="glass-card rounded-2xl overflow-hidden relative aspect-[4/3] mb-5 cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1493863641943-9b68992a8d07?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                        alt="Architecture"
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100">
+                    <div
+                        class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <span
+                            class="px-6 py-2 bg-white text-black rounded-full font-medium text-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">View
+                            Project</span>
+                    </div>
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span
+                            class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 block">Photography</span>
+                        <h3 class="text-xl font-bold text-white group-hover:text-purple-400 transition-colors">Urban
+                            Angles</h3>
+                        <p class="text-gray-400 text-sm mt-2 line-clamp-2">A photo series exploring the geometry of
+                            modern architecture in light and shadow.</p>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Project 4 (Coding) -->
+            <article class="project-item group reveal" data-category="coding">
+                <div class="glass-card rounded-2xl overflow-hidden relative aspect-[4/3] mb-5 cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1555099962-4199c345e5dd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                        alt="Code"
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100">
+                    <div
+                        class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <span
+                            class="px-6 py-2 bg-white text-black rounded-full font-medium text-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">View
+                            Project</span>
+                    </div>
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span class="text-xs font-bold text-blue-400 uppercase tracking-wider mb-1 block">Coding</span>
+                        <h3 class="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">API Gateway
+                        </h3>
+                        <p class="text-gray-400 text-sm mt-2 line-clamp-2">High-performance scalable API infrastructure
+                            built with Node.js.</p>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Page Transition: Fade In
+            setTimeout(() => {
+                document.body.classList.add('loaded');
+            }, 100);
+
+            // Page Transition: Fade Out on Click
+            const links = document.querySelectorAll('.transition-link');
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const href = link.getAttribute('href');
+                    document.body.classList.remove('loaded');
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 800);
+                });
+            });
+
+            // Reveal Animation
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealOnLoad = () => {
+                revealElements.forEach((element) => {
+                    element.classList.add('active');
+                });
+            };
+            setTimeout(revealOnLoad, 100);
+
+            // Generate Particles
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                const size = Math.random() * 3 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.opacity = Math.random() * 0.3;
+                particle.style.animationDuration = `${Math.random() * 10 + 10}s`;
+                particlesContainer.appendChild(particle);
+            }
+
+            // Filtering
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const projectItems = document.querySelectorAll('.project-item');
+
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Reset all buttons
+                    filterButtons.forEach(b => {
+                        b.classList.remove('bg-white', 'text-black');
+                        b.classList.add('bg-white/5', 'text-gray-300');
+                    });
+
+                    // Activate current button
+                    btn.classList.remove('bg-white/5', 'text-gray-300');
+                    btn.classList.add('bg-white', 'text-black');
+
+                    const filterValue = btn.getAttribute('data-filter');
+
+                    projectItems.forEach(item => {
+                        if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                            item.style.display = 'block';
+                            setTimeout(() => {
+                                item.style.opacity = '1';
+                                item.style.transform = 'scale(1)';
+                            }, 50);
+                        } else {
+                            item.style.opacity = '0';
+                            item.style.transform = 'scale(0.95)';
+                            setTimeout(() => {
+                                item.style.display = 'none';
+                            }, 300);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

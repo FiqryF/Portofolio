@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills | Alex Rivera</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            bg: '#0a0a0a',
+                            surface: '#121212',
+                            primary: '#3b82f6',
+                            secondary: '#8b5cf6',
+                            accent: '#ec4899'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                    },
+                    animation: {
+                        'gradient-x': 'gradient-x 15s ease infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': { 'background-size': '200% 200%', 'background-position': 'left center' },
+                            '50%': { 'background-size': '200% 200%', 'background-position': 'right center' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        body.loaded {
+            opacity: 1;
+        }
+
+        /* Moving Background */
+        .animated-bg {
+            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #111827);
+            background-size: 400% 400%;
+            animation: gradient-x 15s ease infinite;
+        }
+
+        /* Glass Effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .skill-node {
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .skill-node:hover {
+            transform: scale(1.15);
+            z-index: 20;
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Floating Particles */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            animation: float 10s infinite;
+            z-index: 0;
+        }
+    </style>
+</head>
+
+<body class="antialiased animated-bg min-h-screen relative">
+    <!-- Particles Container -->
+    <div id="particles" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+                <span class="w-2 h-6 bg-pink-500 rounded-full"></span>
+                AR.
+            </a>
+            <div class="hidden md:flex items-center space-x-8 text-sm font-medium tracking-wide">
+                <a href="index.html" class="text-gray-400 hover:text-white transition-colors transition-link">Home</a>
+                <a href="about.html" class="text-gray-400 hover:text-white transition-colors transition-link">About</a>
+                <a href="skills.html" class="text-white font-bold transition-link">Skills</a>
+                <a href="projects.html"
+                    class="text-gray-400 hover:text-white transition-colors transition-link">Projects</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Skills Section -->
+    <section class="min-h-screen pt-32 pb-20 relative overflow-hidden flex flex-col items-center justify-center z-10">
+
+        <div class="container mx-auto px-6 mb-16 text-center reveal">
+            <span class="text-pink-500 font-medium tracking-widest uppercase text-sm">Capabilities</span>
+            <h2 class="text-4xl font-bold text-white mt-3">My Tech Stack</h2>
+        </div>
+
+        <div class="container mx-auto px-6 relative h-[600px] flex items-center justify-center reveal">
+            <!-- Radial Connection SVG Line Background -->
+            <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-20" style="z-index: 0;">
+                <circle cx="50%" cy="50%" r="150" fill="none" class="stroke-blue-500" stroke-width="1" />
+                <circle cx="50%" cy="50%" r="250" fill="none" class="stroke-pink-500 hidden md:block"
+                    stroke-width="1" />
+                <line x1="50%" y1="50%" x2="50%" y2="20%" class="stroke-white" stroke-width="1" />
+                <line x1="50%" y1="50%" x2="80%" y2="50%" class="stroke-white" stroke-width="1" />
+                <line x1="50%" y1="50%" x2="20%" y2="50%" class="stroke-white" stroke-width="1" />
+                <line x1="50%" y1="50%" x2="50%" y2="80%" class="stroke-white" stroke-width="1" />
+            </svg>
+
+            <!-- Center Node -->
+            <div
+                class="relative z-10 flex flex-col items-center justify-center w-32 h-32 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white shadow-2xl skill-node cursor-pointer">
+                <span class="text-3xl mb-1">💻</span>
+                <span class="font-bold text-xs tracking-widest uppercase">Creator</span>
+            </div>
+
+            <!-- React -->
+            <div
+                class="absolute top-[15%] md:top-[20%] left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 group skill-node cursor-pointer">
+                <div
+                    class="w-20 h-20 rounded-full bg-black/40 backdrop-blur-md border border-blue-500 flex items-center justify-center shadow-lg group-hover:bg-blue-500 group-hover:text-white transition-colors text-blue-400">
+                    <span class="font-bold text-sm">React</span>
+                </div>
+            </div>
+
+            <!-- JavaScript -->
+            <div
+                class="absolute top-1/2 right-[5%] md:right-[20%] transform -translate-y-1/2 flex flex-col items-center gap-2 group skill-node cursor-pointer">
+                <div
+                    class="w-20 h-20 rounded-full bg-black/40 backdrop-blur-md border border-yellow-400 flex items-center justify-center shadow-lg group-hover:bg-yellow-400 group-hover:text-black transition-colors text-yellow-400">
+                    <span class="font-bold text-sm">JS (ES6)</span>
+                </div>
+            </div>
+
+            <!-- Design/Figma -->
+            <div
+                class="absolute bottom-[15%] md:bottom-[20%] left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 group skill-node cursor-pointer">
+                <div
+                    class="w-20 h-20 rounded-full bg-black/40 backdrop-blur-md border border-pink-500 flex items-center justify-center shadow-lg group-hover:bg-pink-500 group-hover:text-white transition-colors text-pink-500">
+                    <span class="font-bold text-sm">Figma</span>
+                </div>
+            </div>
+
+            <!-- Node.js -->
+            <div
+                class="absolute top-1/2 left-[5%] md:left-[20%] transform -translate-y-1/2 flex flex-col items-center gap-2 group skill-node cursor-pointer">
+                <div
+                    class="w-20 h-20 rounded-full bg-black/40 backdrop-blur-md border border-green-500 flex items-center justify-center shadow-lg group-hover:bg-green-500 group-hover:text-white transition-colors text-green-500">
+                    <span class="font-bold text-sm">Node.js</span>
+                </div>
+            </div>
+
+            <!-- Floating Small Nodes (Decor) -->
+            <div class="absolute top-[30%] right-[25%] w-4 h-4 bg-blue-500 rounded-full animate-pulse-slow blur-sm">
+            </div>
+            <div
+                class="absolute bottom-[30%] left-[25%] w-6 h-6 bg-pink-500 rounded-full animate-float blur-sm opacity-60">
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Page Transition: Fade In
+            setTimeout(() => {
+                document.body.classList.add('loaded');
+            }, 100);
+
+            // Page Transition: Fade Out on Click
+            const links = document.querySelectorAll('.transition-link');
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const href = link.getAttribute('href');
+                    document.body.classList.remove('loaded');
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 800);
+                });
+            });
+
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealOnLoad = () => {
+                revealElements.forEach((element) => {
+                    element.classList.add('active');
+                });
+            };
+            setTimeout(revealOnLoad, 100);
+
+            // Generate Particles
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                const size = Math.random() * 3 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.opacity = Math.random() * 0.3;
+                particle.style.animationDuration = `${Math.random() * 10 + 10}s`;
+                particlesContainer.appendChild(particle);
+            }
+        });
+    </script>
+</body>
+
+</html>

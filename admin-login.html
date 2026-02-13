@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | Fiqry Firmansyah</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #050505;
+            color: #ffffff;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nebula {
+            position: absolute;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: nebula 10s ease-in-out infinite alternate;
+            z-index: -1;
+        }
+
+        @keyframes nebula {
+            0% {
+                transform: scale(1) translate(0, 0);
+            }
+
+            100% {
+                transform: scale(1.2) translate(20px, -20px);
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center relative">
+
+    <!-- Nebula Background -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="nebula w-[500px] h-[500px] bg-blue-900/40 rounded-full top-[-10%] left-[-10%]"></div>
+        <div class="nebula w-[400px] h-[400px] bg-purple-900/30 rounded-full bottom-[-10%] right-[-10%]"></div>
+    </div>
+
+    <div class="glass rounded-3xl p-12 max-w-md w-full mx-4 relative z-10">
+        <div class="text-center mb-8">
+            <h1
+                class="text-3xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">
+                Admin Login
+            </h1>
+            <p class="text-gray-400 text-sm">Welcome back, Fiqry</p>
+        </div>
+
+        <form id="loginForm" class="space-y-6">
+            <div>
+                <label for="username" class="block text-sm font-medium text-gray-300 mb-2">Username</label>
+                <input type="text" id="username"
+                    class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 transition-colors"
+                    placeholder="Enter username" required>
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                <input type="password" id="password"
+                    class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 transition-colors"
+                    placeholder="Enter password" required>
+            </div>
+
+            <button type="submit"
+                class="w-full py-3 rounded-xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300">
+                Login
+            </button>
+        </form>
+
+        <a href="index.html" class="block text-center mt-6 text-sm text-gray-400 hover:text-white transition-colors">
+            ← Back to Home
+        </a>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Login functionality will be implemented with backend authentication');
+        });
+    </script>
+
+</body>
+
+</html>
