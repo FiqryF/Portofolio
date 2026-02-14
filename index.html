@@ -25,11 +25,11 @@
                 extend: {
                     colors: {
                         dark: {
-                            bg: '#0a0a0a',
-                            surface: '#121212',
-                            primary: '#3b82f6',
-                            secondary: '#8b5cf6',
-                            accent: '#ec4899'
+                            bg: '#050505',
+                            surface: '#0a0a0a',
+                            primary: '#ffffff',
+                            secondary: '#a3a3a3',
+                            accent: '#525252'
                         }
                     },
                     fontFamily: {
@@ -119,7 +119,7 @@
         .premium-btn:hover {
             transform: translateY(-5px);
             border-color: rgba(255, 255, 255, 0.4);
-            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.1);
         }
 
         .reveal {
@@ -133,39 +133,12 @@
             transform: translateY(0);
         }
 
-        /* Twinkling Stars */
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            opacity: 0;
-            animation: twinkle var(--duration) ease-in-out infinite;
-            animation-delay: var(--delay);
-        }
-
-        @keyframes twinkle {
-            0% {
-                opacity: 0;
-                transform: scale(0.3);
-            }
-
-            50% {
-                opacity: 0.8;
-                transform: scale(1);
-                box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-            }
-
-            100% {
-                opacity: 0;
-                transform: scale(0.3);
-            }
-        }
 
         /* Nebula/Aurora */
         .nebula {
             position: absolute;
-            filter: blur(80px);
-            opacity: 0.4;
+            filter: blur(100px);
+            opacity: 0.2;
             animation: nebula 10s ease-in-out infinite alternate;
             z-index: -1;
         }
@@ -186,15 +159,15 @@
         }
 
         .glitch-text::before {
-            left: 2px;
-            text-shadow: -1px 0 #ff00c1;
+            left: 1px;
+            text-shadow: -1px 0 rgba(255, 255, 255, 0.5);
             clip: rect(44px, 450px, 56px, 0);
             animation: glitch-anim 5s infinite linear alternate-reverse;
         }
 
         .glitch-text::after {
-            left: -2px;
-            text-shadow: -1px 0 #00fff9;
+            left: -1px;
+            text-shadow: -1px 0 rgba(255, 255, 255, 0.3);
             clip: rect(44px, 450px, 56px, 0);
             animation: glitch-anim2 5s infinite linear alternate-reverse;
         }
@@ -371,16 +344,6 @@
             }
         }
 
-        /* Interactive Canvas */
-        #constellation {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
 
         /* Cursor Typewriter */
         .typewriter::after {
@@ -494,13 +457,27 @@
             inset: 0;
             border-radius: 50%;
             padding: 3px;
-            background: linear-gradient(135deg, #ef4444, #f97316, #ef4444);
+            background: linear-gradient(135deg, #ffffff, #a3a3a3, #525252);
             background-size: 200% 200%;
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
             mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            animation: rotate-warning 2s linear infinite, pulse-warning 1.5s ease-in-out infinite;
+            animation: rotate-warning 2s linear infinite, pulse-white 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse-white {
+
+            0%,
+            100% {
+                opacity: 1;
+                filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+            }
+
+            50% {
+                opacity: 0.6;
+                filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.5));
+            }
         }
 
         @keyframes rotate-warning {
@@ -529,7 +506,7 @@
 
         .logo-warning {
             animation: shake-warning 0.5s ease-in-out infinite;
-            filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.3));
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2));
         }
 
         @keyframes shake-warning {
@@ -553,7 +530,7 @@
             inset: 0;
             border-radius: 50%;
             padding: 3px;
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
+            background: linear-gradient(135deg, #ffffff, #a3a3a3, #525252);
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -574,12 +551,13 @@
         .icon-inner {
             position: absolute;
             inset: 3px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(15px);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         /* Modal Buttons */
@@ -603,15 +581,15 @@
         }
 
         .modal-btn-primary {
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
+            background: linear-gradient(135deg, #ffffff, #737373, #171717);
             background-size: 200% 200%;
-            color: white;
+            color: black;
             animation: gradient-shift 4s ease-in-out infinite;
         }
 
         .modal-btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(59, 130, 246, 0.5);
+            box-shadow: 0 12px 30px rgba(255, 255, 255, 0.2);
         }
 
         .modal-btn-secondary {
@@ -632,31 +610,25 @@
 
     <!-- Nebula Background -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none">
-        <div class="nebula w-[500px] h-[500px] bg-blue-900/40 rounded-full top-[-10%] left-[-10%] animate-nebula"
+        <div class="nebula w-[600px] h-[600px] bg-white/5 rounded-full top-[-10%] left-[-10%] animate-nebula"
             style="animation-delay: 0s;"></div>
-        <div class="nebula w-[400px] h-[400px] bg-purple-900/30 rounded-full bottom-[-10%] right-[-10%] animate-nebula"
+        <div class="nebula w-[500px] h-[500px] bg-gray-500/5 rounded-full bottom-[-10%] right-[-10%] animate-nebula"
             style="animation-delay: -5s;"></div>
-        <div class="nebula w-[300px] h-[300px] bg-pink-900/20 rounded-full top-[40%] left-[60%] animate-nebula"
+        <div class="nebula w-[400px] h-[400px] bg-white/5 rounded-full top-[40%] left-[60%] animate-nebula"
             style="animation-delay: -2s;"></div>
     </div>
 
-    <!-- Constellation Canvas -->
-    <canvas id="constellation"></canvas>
 
-    <!-- Stars Container -->
-    <div id="stars" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
 
     <!-- Custom Admin Confirmation Modal - Hero Style -->
     <div id="adminModal" class="modal-overlay">
-        <!-- Stars in Modal -->
-        <div id="modalStars" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
 
         <!-- Nebula Background in Modal -->
         <div class="modal-nebula">
-            <div class="nebula w-[400px] h-[400px] bg-blue-900/40 rounded-full" style="top: -30%; left: -20%;"></div>
-            <div class="nebula w-[350px] h-[350px] bg-purple-900/35 rounded-full" style="bottom: -30%; right: -20%;">
+            <div class="nebula w-[400px] h-[400px] bg-white/5 rounded-full" style="top: -30%; left: -20%;"></div>
+            <div class="nebula w-[350px] h-[350px] bg-gray-500/5 rounded-full" style="bottom: -30%; right: -20%;">
             </div>
-            <div class="nebula w-[300px] h-[300px] bg-pink-900/30 rounded-full" style="top: 40%; right: -15%;"></div>
+            <div class="nebula w-[300px] h-[300px] bg-white/5 rounded-full" style="top: 40%; right: -15%;"></div>
         </div>
 
         <div class="modal-content">
@@ -671,19 +643,18 @@
             <!-- Title -->
             <h2 class="text-4xl md:text-5xl font-black mb-4 tracking-tighter">
                 <span
-                    class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 animate-gradient-x">
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-300 to-gray-500 animate-gradient-x">
                     Admin Access
                 </span>
             </h2>
 
             <!-- Divider Line -->
             <div
-                class="w-20 h-1 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 rounded-full mx-auto mb-6 opacity-60">
+                class="w-20 h-1 bg-gradient-to-r from-white via-gray-300 to-gray-500 rounded-full mx-auto mb-6 opacity-30">
             </div>
 
             <!-- Question Badge -->
-            <div
-                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border border-white/20 mb-3">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-3">
                 <span class="text-sm font-semibold text-white">Apakah anda Fiqry?</span>
             </div>
 
@@ -724,21 +695,21 @@
 
             <!-- Name Tag with Animated Gradient -->
             <div
-                class="reveal inline-flex items-center gap-3 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border border-white/20 mb-8 hover:border-white/40 transition-all duration-300 name-badge">
+                class="reveal inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8 hover:border-white/30 transition-all duration-300 name-badge">
                 <span class="relative flex h-2 w-2">
                     <span
-                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
                 </span>
                 <span
-                    class="text-xs font-bold tracking-widest uppercase bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 name-text">Fiqry
+                    class="text-xs font-bold tracking-widest uppercase bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-300 to-gray-500 name-text">Fiqry
                     Firmansyah</span>
             </div>
 
             <h1
                 class="reveal text-5xl md:text-7xl lg:text-9xl font-black text-white mb-6 tracking-tighter leading-none">
                 <span
-                    class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 animate-gradient-x inline-block animate-float">
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-300 to-gray-400 animate-gradient-x inline-block animate-float">
                     IoT & Frontend
                 </span> <br>
                 <span class="glitch-text inline-block" data-text="DEVELOPER">DEVELOPER</span>
@@ -757,7 +728,7 @@
                 class="premium-btn group w-64 h-20 rounded-2xl flex items-center justify-between px-6 transition-link">
                 <div class="flex items-center gap-4">
                     <div
-                        class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 group-hover:bg-purple-500 group-hover:text-white transition-colors">
+                        class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-colors">
                         <span class="material-symbols-outlined">person</span>
                     </div>
                     <div class="text-left">
@@ -773,7 +744,7 @@
                 class="premium-btn group w-64 h-20 rounded-2xl flex items-center justify-between px-6 transition-link">
                 <div class="flex items-center gap-4">
                     <div
-                        class="w-10 h-10 rounded-full bg-pink-500/20 flex items-center justify-center text-pink-400 group-hover:bg-pink-500 group-hover:text-white transition-colors">
+                        class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-colors">
                         <span class="material-symbols-outlined">bolt</span>
                     </div>
                     <div class="text-left">
@@ -789,7 +760,7 @@
                 class="premium-btn group w-64 h-20 rounded-2xl flex items-center justify-between px-6 transition-link">
                 <div class="flex items-center gap-4">
                     <div
-                        class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition-colors">
+                        class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-colors">
                         <span class="material-symbols-outlined">layers</span>
                     </div>
                     <div class="text-left">
@@ -835,22 +806,11 @@
             const modal = document.getElementById('adminModal');
             const modalYes = document.getElementById('modalYes');
             const modalNo = document.getElementById('modalNo');
-            const modalStarsContainer = document.getElementById('modalStars');
 
             document.getElementById('logoLink').addEventListener('click', (e) => {
                 e.preventDefault();
                 modal.classList.add('active');
 
-                // Generate stars in modal
-                modalStarsContainer.innerHTML = '';
-                for (let i = 0; i < 50; i++) {
-                    const star = document.createElement('div');
-                    star.className = 'star';
-                    star.style.left = Math.random() * 100 + '%';
-                    star.style.top = Math.random() * 100 + '%';
-                    star.style.animationDelay = Math.random() * 3 + 's';
-                    modalStarsContainer.appendChild(star);
-                }
             });
 
             modalYes.addEventListener('click', () => {
@@ -872,131 +832,7 @@
                 }
             });
 
-            // --------------------------------------------------------
-            // CONSTELLATION MOUSE EFFECT
-            // --------------------------------------------------------
-            const canvas = document.getElementById('constellation');
-            const ctx = canvas.getContext('2d');
-            let width, height;
-            let particles = [];
 
-            let mouse = { x: null, y: null, radius: 150 };
-
-            window.addEventListener('mousemove', (e) => {
-                mouse.x = e.x;
-                mouse.y = e.y;
-            });
-
-            function resize() {
-                width = canvas.width = window.innerWidth;
-                height = canvas.height = window.innerHeight;
-            }
-            window.addEventListener('resize', resize);
-            resize();
-
-            class Particle {
-                constructor() {
-                    this.x = Math.random() * width;
-                    this.y = Math.random() * height;
-                    this.vx = (Math.random() - 0.5) * 0.5;
-                    this.vy = (Math.random() - 0.5) * 0.5;
-                    this.size = Math.random() * 2 + 1;
-                }
-
-                update() {
-                    this.x += this.vx;
-                    this.y += this.vy;
-                    if (this.x < 0 || this.x > width) this.vx *= -1;
-                    if (this.y < 0 || this.y > height) this.vy *= -1;
-                }
-
-                draw() {
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-                    ctx.fill();
-                }
-            }
-
-            function initParticles() {
-                particles = [];
-                let numParticles = (width * height) / 9000;
-                for (let i = 0; i < numParticles; i++) {
-                    particles.push(new Particle());
-                }
-            }
-            initParticles();
-
-            function animateConstellation() {
-                ctx.clearRect(0, 0, width, height);
-                for (let i = 0; i < particles.length; i++) {
-                    particles[i].update();
-                    particles[i].draw();
-
-                    for (let j = i; j < particles.length; j++) {
-                        let dx = particles[i].x - particles[j].x;
-                        let dy = particles[i].y - particles[j].y;
-                        let distance = Math.sqrt(dx * dx + dy * dy);
-
-                        if (distance < 100) {
-                            ctx.beginPath();
-                            ctx.strokeStyle = `rgba(255, 255, 255, ${0.1 - distance / 1000})`;
-                            ctx.lineWidth = 0.5;
-                            ctx.moveTo(particles[i].x, particles[i].y);
-                            ctx.lineTo(particles[j].x, particles[j].y);
-                            ctx.stroke();
-                        }
-                    }
-                    if (mouse.x != null) {
-                        let dx = particles[i].x - mouse.x;
-                        let dy = particles[i].y - mouse.y;
-                        let distance = Math.sqrt(dx * dx + dy * dy);
-                        if (distance < 150) {
-                            ctx.beginPath();
-                            ctx.strokeStyle = `rgba(59, 130, 246, ${1 - distance / 150})`;
-                            ctx.lineWidth = 0.8;
-                            ctx.moveTo(particles[i].x, particles[i].y);
-                            ctx.lineTo(mouse.x, mouse.y);
-                            ctx.stroke();
-                        }
-                    }
-                }
-                requestAnimationFrame(animateConstellation);
-            }
-            animateConstellation();
-
-            // --------------------------------------------------------
-            // ENHANCED STARFIELD
-            // --------------------------------------------------------
-            const starsContainer = document.getElementById('stars');
-            const starCount = 200;
-
-            for (let i = 0; i < starCount; i++) {
-                const star = document.createElement('div');
-                star.classList.add('star');
-
-                const r = Math.random();
-                let size;
-                if (r < 0.7) {
-                    size = Math.random() * 1 + 0.5;
-                } else {
-                    size = Math.random() * 1.5 + 1.5;
-                }
-
-                star.style.width = `${size}px`;
-                star.style.height = `${size}px`;
-                star.style.left = `${Math.random() * 100}%`;
-                star.style.top = `${Math.random() * 100}%`;
-
-                star.style.setProperty('--duration', `${Math.random() * 3 + 1.5}s`);
-                star.style.setProperty('--delay', `${Math.random() * 5}s`);
-
-                if (Math.random() > 0.9) {
-                    star.style.boxShadow = `0 0 ${Math.random() * 5 + 3}px rgba(255, 255, 255, 0.8)`;
-                }
-
-                starsContainer.appendChild(star);
-            }
         });
     </script>
 </body>
