@@ -647,13 +647,16 @@
         nav {
             position: fixed;
             top: 1.5rem;
-            left: 50%;
-            transform: translateX(-50%) translateY(0);
+            /* Changed from center to top left */
+            left: 1.5rem;
+            /* Removed translateX centering transform */
+            transform: translateY(0);
             width: auto;
-            min-width: 320px;
-            max-width: 800px;
-            width: 90%;
-            border-radius: 999px;
+            /* width/min/max removed to fit logo content only */
+            padding: 0.5rem;
+            /* Added padding */
+            border-radius: 50%;
+            /* Make it round */
             background: rgba(5, 5, 5, 0.8);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -662,13 +665,13 @@
             z-index: 1000;
             opacity: 0;
             visibility: hidden;
-            transform: translateX(-50%) translateY(-100px);
+            transform: translateY(-100px);
         }
 
         body.loaded nav {
             opacity: 1;
             visibility: visible;
-            transform: translateX(-50%) translateY(0);
+            transform: translateY(0);
         }
 
         nav.scrolled {
@@ -679,7 +682,7 @@
         }
 
         body.exiting nav {
-            transform: translateX(-50%) translateY(-100px);
+            transform: translateY(-100px);
             opacity: 0;
         }
 
@@ -889,48 +892,15 @@
         </div>
     </div>
 
-    <!-- Navigation -->
+    <!-- Navigation (Logo Only) -->
     <nav id="navbar">
-        <div class="px-6 py-3 flex justify-between items-center gap-12" id="navContainer">
+        <div class="flex justify-center items-center" id="navContainer">
             <a href="index.html" id="logoLink" class="group cursor-pointer transition-link flex items-center shrink-0">
                 <img src="logo-edelweiss.png" alt="Fiqry Logo"
                     class="h-10 w-10 object-contain transition-all group-hover:scale-110">
             </a>
-
-            <!-- Desktop Icon Navigation -->
-            <div class="hidden md:flex items-center gap-3">
-                <a href="index.html" class="nav-icon active transition-link" title="Home">
-                    <span class="material-symbols-outlined text-[20px]">home</span>
-                </a>
-                <a href="about.html" class="nav-icon transition-link" title="About">
-                    <span class="material-symbols-outlined text-[20px]">person</span>
-                </a>
-                <a href="skills.html" class="nav-icon transition-link" title="Skills">
-                    <span class="material-symbols-outlined text-[20px]">bolt</span>
-                </a>
-                <a href="projects.html" class="nav-icon transition-link" title="Projects">
-                    <span class="material-symbols-outlined text-[20px]">layers</span>
-                </a>
-            </div>
-
-            <!-- Mobile Hamburger -->
-            <div class="hamburger md:hidden shrink-0" id="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
         </div>
     </nav>
-
-    <!-- Overlay Menu -->
-    <div class="menu-overlay" id="menuOverlay">
-        <div class="menu-links text-left px-6">
-            <a href="index.html" class="transition-link">Home</a>
-            <a href="about.html" class="transition-link">About</a>
-            <a href="skills.html" class="transition-link">Skills</a>
-            <a href="projects.html" class="transition-link">Projects</a>
-        </div>
-    </div>
 
     <!-- Hero Content -->
     <main class="min-h-screen flex flex-col justify-center items-center relative z-10 px-6">
@@ -1038,13 +1008,6 @@
 
                     e.preventDefault();
 
-                    // Close menu if open
-                    if (hamburger && menuOverlay) {
-                        hamburger.classList.remove('active');
-                        menuOverlay.classList.remove('active');
-                        document.body.style.overflow = 'auto';
-                    }
-
                     // Exit Animation
                     document.body.classList.add('exiting');
                     document.body.classList.remove('loaded');
@@ -1055,26 +1018,8 @@
                 });
             });
 
-            // Hamburger Menu Logic
-            const hamburger = document.getElementById('hamburger');
-            const menuOverlay = document.getElementById('menuOverlay');
-            const navbar = document.getElementById('navbar');
-
-            if (hamburger && menuOverlay) {
-                hamburger.addEventListener('click', () => {
-                    hamburger.classList.toggle('active');
-                    menuOverlay.classList.toggle('active');
-
-                    // Prevent scrolling when menu is open
-                    if (menuOverlay.classList.contains('active')) {
-                        document.body.style.overflow = 'hidden';
-                    } else {
-                        document.body.style.overflow = 'auto';
-                    }
-                });
-            }
-
             // Scroll Handler
+            const navbar = document.getElementById('navbar');
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 50) {
                     navbar.classList.add('scrolled');
