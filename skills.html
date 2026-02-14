@@ -39,6 +39,7 @@
                         'gradient-x': 'gradient-x 15s ease infinite',
                         'float': 'float 6s ease-in-out infinite',
                         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'nebula': 'nebula 20s ease infinite alternate',
                     },
                     keyframes: {
                         'gradient-x': {
@@ -48,6 +49,10 @@
                         float: {
                             '0%, 100%': { transform: 'translateY(0)' },
                             '50%': { transform: 'translateY(-10px)' },
+                        },
+                        nebula: {
+                            '0%': { transform: 'scale(1) translate(0, 0)' },
+                            '100%': { transform: 'scale(1.2) translate(20px, -20px)' },
                         }
                     }
                 }
@@ -103,34 +108,6 @@
             }
         }
 
-        /* Glass Effect */
-        .glass {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .skill-node {
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .skill-node:hover {
-            transform: scale(1.15);
-            z-index: 20;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
-        }
-
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 1s cubic-bezier(0.5, 0, 0, 1);
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
         /* Nebula/Aurora */
         .nebula {
             position: absolute;
@@ -140,36 +117,84 @@
             z-index: -1;
         }
 
-        @keyframes nebula {
-            0% {
-                transform: scale(1) translate(0, 0);
-            }
-
-            100% {
-                transform: scale(1.2) translate(20px, -20px);
-            }
+        /* PREMIUM OBSIDIAN CARD DESIGN */
+        .skill-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            /* Subtle top lighting effect */
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
         }
 
-        /* Header Animation */
+        .skill-card:hover {
+            transform: translateY(-8px);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px -5px rgba(255, 255, 255, 0.05);
+        }
+
+        /* Internal Glow Spot */
+        .glow-spot {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            top: -50px;
+            right: -50px;
+            border-radius: 50%;
+            opacity: 0.5;
+            transition: all 0.5s ease;
+        }
+
+        .skill-card:hover .glow-spot {
+            opacity: 0.8;
+            transform: scale(1.2);
+        }
+
+        /* Clean Skill Tag (Unified Font) */
+        .skill-tag {
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 6px 14px;
+            border-radius: 99px;
+            /* Pill shape */
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: #a3a3a3;
+            transition: all 0.3s ease;
+            letter-spacing: 0.02em;
+        }
+
+        .skill-tag:hover {
+            background: rgba(255, 255, 255, 0.9);
+            color: #000;
+            border-color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.15);
+        }
+
+        /* Navigation Style */
         nav {
             position: fixed;
             top: 1.5rem;
             left: 50%;
-            transform: translateX(-50%) translateY(0);
-            width: auto;
-            min-width: 320px;
-            max-width: 800px;
+            transform: translateX(-50%);
             width: 90%;
+            max-width: 1000px;
             border-radius: 999px;
             background: rgba(5, 5, 5, 0.8);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
             z-index: 1000;
             opacity: 0;
             visibility: hidden;
-            transform: translateX(-50%) translateY(-100px);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         body.loaded nav {
@@ -225,26 +250,6 @@
             z-index: 1100;
         }
 
-        /* Overlay Menu */
-        .menu-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(5, 5, 5, 0.95);
-            backdrop-filter: blur(25px);
-            z-index: 950;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .menu-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
         .hamburger span {
             display: block;
             position: absolute;
@@ -285,13 +290,24 @@
             transform: rotate(-135deg);
         }
 
-        /* Minimalist Hamburger */
-        .hamburger {
-            width: 30px;
-            height: 20px;
-            position: relative;
-            cursor: pointer;
-            z-index: 1100;
+        /* Overlay Menu */
+        .menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 5, 5, 0.95);
+            backdrop-filter: blur(25px);
+            z-index: 950;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
 
         .menu-links a {
@@ -331,6 +347,17 @@
         .menu-links a:nth-child(4) {
             transition-delay: 0.4s;
         }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 
@@ -344,11 +371,13 @@
 
     <!-- Nebula Background -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none">
-        <div class="nebula w-[600px] h-[600px] bg-white/5 rounded-full top-[-10%] left-[-10%]"></div>
-        <div class="nebula w-[500px] h-[500px] bg-gray-500/5 rounded-full bottom-[-10%] right-[-10%]"></div>
+        <div class="nebula w-[600px] h-[600px] bg-white/5 rounded-full top-[-10%] left-[-10%] animate-nebula"
+            style="animation-delay: 0s;"></div>
+        <div class="nebula w-[500px] h-[500px] bg-gray-500/5 rounded-full bottom-[-10%] right-[-10%] animate-nebula"
+            style="animation-delay: -5s;"></div>
     </div>
 
-    <!-- Navigation -->
+    <!-- Navigation Header -->
     <nav id="navbar">
         <div class="px-6 py-3 flex justify-between items-center gap-12" id="navContainer">
             <a href="index.html" class="group cursor-pointer transition-link flex items-center shrink-0">
@@ -391,78 +420,156 @@
         </div>
     </div>
 
-    <!-- Skills Section -->
-    <section class="min-h-screen pt-32 pb-20 relative overflow-hidden flex flex-col items-center justify-center z-10">
+    <!-- Skills Content -->
+    <section class="min-h-screen pt-32 pb-20 relative px-6 md:px-12 flex flex-col items-center">
 
-        <div class="container mx-auto px-6 mb-16 text-center reveal">
-            <span class="text-gray-500 font-bold tracking-widest uppercase text-xs">Capabilities</span>
-            <h2 class="text-5xl font-black text-white mt-3 tracking-tighter">My Tech Stack</h2>
+        <!-- Header Section -->
+        <div class="max-w-4xl w-full mx-auto text-center mb-16 reveal">
+            <h1 class="text-4xl md:text-6xl font-black mb-6 tracking-tight text-white leading-tight">
+                EXPERTISE & <br>
+                <span class="text-gray-500">TECHNOLOGIES</span>
+            </h1>
+            <p class="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed font-light">
+                Crafting digital experiences with <b class="text-white">Frontend Precision</b> and connecting the
+                physical world with <b class="text-white">IoT Intelligence</b>.
+            </p>
         </div>
 
-        <div class="container mx-auto px-6 relative h-[600px] flex items-center justify-center reveal">
-            <!-- Radial Connection SVG Line Background -->
-            <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-20" style="z-index: 0;">
-                <circle cx="50%" cy="50%" r="150" fill="none" class="stroke-white/20" stroke-width="1" />
-                <circle cx="50%" cy="50%" r="250" fill="none" class="stroke-white/10 hidden md:block"
-                    stroke-width="1" />
-                <line x1="50%" y1="50%" x2="50%" y2="20%" class="stroke-white/20" stroke-width="1" />
-                <line x1="50%" y1="50%" x2="80%" y2="50%" class="stroke-white/20" stroke-width="1" />
-                <line x1="50%" y1="50%" x2="20%" y2="50%" class="stroke-white/20" stroke-width="1" />
-                <line x1="50%" y1="50%" x2="50%" y2="80%" class="stroke-white/20" stroke-width="1" />
-            </svg>
+        <!-- Grid Container -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl w-full mx-auto">
 
-            <!-- Center Node -->
-            <div
-                class="relative z-10 flex flex-col items-center justify-center w-32 h-32 rounded-full bg-white/5 backdrop-blur-md border border-white/20 text-white shadow-2xl skill-node cursor-pointer group">
-                <span
-                    class="material-symbols-outlined text-4xl mb-1 group-hover:scale-110 transition-transform">bolt</span>
-                <span class="font-black text-[10px] tracking-widest uppercase opacity-50">Stack</span>
-            </div>
+            <!-- Card 1: Frontend -->
+            <div class="reveal" style="transition-delay: 0.1s;">
+                <div class="skill-card rounded-3xl p-8 h-full flex flex-col group">
+                    <div class="glow-spot"></div>
 
-            <!-- React -->
-            <div
-                class="absolute top-[15%] md:top-[20%] left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 group skill-node cursor-pointer">
-                <div
-                    class="w-20 h-20 rounded-full bg-white/5 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-lg group-hover:bg-white group-hover:text-black transition-colors text-white">
-                    <span class="font-bold text-sm tracking-tight">React</span>
+                    <!-- Header -->
+                    <div class="flex items-center gap-4 mb-6 relative z-10">
+                        <div
+                            class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-300">
+                            <span class="material-symbols-outlined text-2xl">code_blocks</span>
+                        </div>
+                        <h3 class="text-xl font-bold tracking-tight">FRONTEND</h3>
+                    </div>
+
+                    <div class="w-full h-px bg-gradient-to-r from-white/20 to-transparent mb-6"></div>
+
+                    <p class="text-sm text-gray-400 mb-8 font-light leading-relaxed relative z-10">
+                        Architecting immersive web interfaces with modern reactive frameworks and pixel-perfect styling.
+                    </p>
+
+                    <div class="mt-auto flex flex-wrap gap-2 relative z-10">
+                        <span class="skill-tag">React JS</span>
+                        <span class="skill-tag">Tailwind</span>
+                        <span class="skill-tag">ES6+</span>
+                        <span class="skill-tag">Next.js</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- JavaScript -->
-            <div
-                class="absolute top-1/2 right-[5%] md:right-[20%] transform -translate-y-1/2 flex flex-col items-center gap-2 group skill-node cursor-pointer">
-                <div
-                    class="w-20 h-20 rounded-full bg-white/5 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-lg group-hover:bg-white group-hover:text-black transition-colors text-white">
-                    <span class="font-bold text-sm tracking-tight">JS (ES6)</span>
+            <!-- Card 2: IoT -->
+            <div class="reveal" style="transition-delay: 0.2s;">
+                <div class="skill-card rounded-3xl p-8 h-full flex flex-col group">
+                    <div class="glow-spot"></div>
+
+                    <!-- Header -->
+                    <div class="flex items-center gap-4 mb-6 relative z-10">
+                        <div
+                            class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-300">
+                            <span class="material-symbols-outlined text-2xl">hub</span>
+                        </div>
+                        <h3 class="text-xl font-bold tracking-tight">IOT & EMBEDDED</h3>
+                    </div>
+
+                    <div class="w-full h-px bg-gradient-to-r from-white/20 to-transparent mb-6"></div>
+
+                    <p class="text-sm text-gray-400 mb-8 font-light leading-relaxed relative z-10">
+                        Connecting hardware to the cloud. Building smart systems that sense, analyze, and act via MQTT &
+                        HTTP.
+                    </p>
+
+                    <div class="mt-auto flex flex-wrap gap-2 relative z-10">
+                        <span class="skill-tag">ESP32</span>
+                        <span class="skill-tag">C++</span>
+                        <span class="skill-tag">MQTT</span>
+                        <span class="skill-tag">Sensors</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Node.js/IoT -->
-            <div
-                class="absolute bottom-[15%] md:bottom-[20%] left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 group skill-node cursor-pointer">
-                <div
-                    class="w-20 h-20 rounded-full bg-white/5 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-lg group-hover:bg-white group-hover:text-black transition-colors text-white">
-                    <span class="font-bold text-sm tracking-tight">IoT</span>
+            <!-- Card 3: Tools -->
+            <div class="reveal" style="transition-delay: 0.3s;">
+                <div class="skill-card rounded-3xl p-8 h-full flex flex-col group">
+                    <div class="glow-spot"></div>
+
+                    <!-- Header -->
+                    <div class="flex items-center gap-4 mb-6 relative z-10">
+                        <div
+                            class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-300">
+                            <span class="material-symbols-outlined text-2xl">construction</span>
+                        </div>
+                        <h3 class="text-xl font-bold tracking-tight">DEV TOOLS</h3>
+                    </div>
+
+                    <div class="w-full h-px bg-gradient-to-r from-white/20 to-transparent mb-6"></div>
+
+                    <p class="text-sm text-gray-400 mb-8 font-light leading-relaxed relative z-10">
+                        The essential toolkit ensuring efficiency, version control, and scalable system architecture.
+                    </p>
+
+                    <div class="mt-auto flex flex-wrap gap-2 relative z-10">
+                        <span class="skill-tag">Git</span>
+                        <span class="skill-tag">Figma</span>
+                        <span class="skill-tag">Firebase</span>
+                        <span class="skill-tag">Postman</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- CSS -->
-            <div
-                class="absolute top-1/2 left-[5%] md:left-[20%] transform -translate-y-1/2 flex flex-col items-center gap-2 group skill-node cursor-pointer">
-                <div
-                    class="w-20 h-20 rounded-full bg-white/5 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-lg group-hover:bg-white group-hover:text-black transition-colors text-white">
-                    <span class="font-bold text-sm tracking-tight">Tailwind</span>
-                </div>
-            </div>
-
-            <!-- Floating Small Nodes (Decor) -->
-            <div class="absolute top-[30%] right-[25%] w-4 h-4 bg-white/20 rounded-full animate-pulse blur-sm">
-            </div>
-            <div
-                class="absolute bottom-[30%] left-[25%] w-6 h-6 bg-gray-500/20 rounded-full animate-float blur-sm opacity-60">
-            </div>
         </div>
+
     </section>
+
+    <!-- Simple Minimalist Footer with SVG Icons -->
+    <footer class="mt-20 py-8 border-t border-white/5 bg-black/40 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-xs text-gray-500 font-sans tracking-wide">
+                &copy; 2024 Fiqry Firmansyah. All rights reserved.
+            </div>
+
+            <div class="flex gap-6 items-center">
+                <!-- LinkedIn -->
+                <a href="#"
+                    class="text-gray-400 hover:text-white transition-colors duration-300 transform hover:scale-110">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                            d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                    </svg>
+                </a>
+
+                <!-- GitHub -->
+                <a href="#"
+                    class="text-gray-400 hover:text-white transition-colors duration-300 transform hover:scale-110">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </a>
+
+                <!-- Instagram -->
+                <a href="#"
+                    class="text-gray-400 hover:text-white transition-colors duration-300 transform hover:scale-110">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.468 2.373c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -481,14 +588,12 @@
 
                     e.preventDefault();
 
-                    // Close menu if open
                     if (hamburger && menuOverlay) {
                         hamburger.classList.remove('active');
                         menuOverlay.classList.remove('active');
                         document.body.style.overflow = 'auto';
                     }
 
-                    // Exit Animation
                     document.body.classList.add('exiting');
                     document.body.classList.remove('loaded');
 
@@ -498,7 +603,7 @@
                 });
             });
 
-            // Hamburger Menu Logic
+            // Hamburger Logic
             const hamburger = document.getElementById('hamburger');
             const menuOverlay = document.getElementById('menuOverlay');
             const navbar = document.getElementById('navbar');
@@ -508,7 +613,6 @@
                     hamburger.classList.toggle('active');
                     menuOverlay.classList.toggle('active');
 
-                    // Prevent scrolling when menu is open
                     if (menuOverlay.classList.contains('active')) {
                         document.body.style.overflow = 'hidden';
                     } else {
@@ -526,13 +630,14 @@
                 }
             });
 
+            // Reveal Animation
             const revealElements = document.querySelectorAll('.reveal');
             const revealOnLoad = () => {
                 revealElements.forEach((element) => {
                     element.classList.add('active');
                 });
             };
-            setTimeout(revealOnLoad, 100);
+            setTimeout(revealOnLoad, 200);
         });
     </script>
 </body>

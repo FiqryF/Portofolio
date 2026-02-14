@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | CMS Premium</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            bg: '#050505',
+                            surface: '#0a0a0a',
+                            border: '#1f1f1f',
+                            active: '#262626',
+                            accent: '#ffffff'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #050505;
+            color: #ffffff;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #050505;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #262626;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #404040;
+        }
+
+        .sidebar-link {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar-link.active {
+            background: #ffffff;
+            color: #000000;
+            font-weight: 700;
+            box-shadow: 0 10px 20px -5px rgba(255, 255, 255, 0.2);
+        }
+
+        .input-field {
+            background: #0d0d0d;
+            border: 1px solid #262626;
+            color: white;
+            padding: 0.85rem;
+            border-radius: 0.75rem;
+            width: 100%;
+            transition: all 0.3s;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #ffffff;
+            background: #121212;
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.05);
+        }
+
+        .about-tab-btn.active {
+            background: #ffffff;
+            color: #000000;
+            border-color: #ffffff;
+        }
+
+        /* Glassmorphism for Preview */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+        }
+
+        /* Sidebar Desktop vs Mobile */
+        #sidebar {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @media (max-width: 1024px) {
+            #sidebar {
+                position: fixed;
+                z-index: 1000;
+                transform: translateX(-100%);
+            }
+
+            #sidebar.open {
+                transform: translateX(0);
+            }
+        }
+
+        #sidebarOverlay {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        #sidebarOverlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+
+<body class="h-screen flex overflow-hidden">
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebarOverlay" onclick="toggleSidebar()"
+        class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[950] lg:hidden"></div>
+
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="w-72 bg-dark-surface border-r border-dark-border flex flex-col shrink-0 h-full">
+        <div class="p-8 border-b border-dark-border flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div
+                    class="w-10 h-10 bg-white rounded-2xl flex items-center justify-center text-black font-black text-lg rotate-3">
+                    A</div>
+                <div>
+                    <h1 class="font-black tracking-tight text-sm">CMS PANEL</h1>
+                    <p class="text-[9px] text-gray-500 font-mono tracking-widest uppercase">Portfolio v2.0</p>
+                </div>
+            </div>
+            <button onclick="toggleSidebar()" class="lg:hidden text-gray-400">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <nav class="flex-1 p-6 space-y-3 overflow-y-auto custom-scrollbar">
+            <p class="text-[10px] font-bold text-gray-600 uppercase tracking-widest px-4 mb-2">Menu Utama</p>
+            <button onclick="switchTab('home')" id="btn-home"
+                class="sidebar-link w-full text-left px-5 py-4 rounded-2xl text-gray-400 hover:text-white hover:bg-white/5 flex items-center gap-4 active">
+                <span class="material-symbols-outlined text-[22px]">home</span>
+                <span class="text-sm font-medium">Halaman Utama</span>
+            </button>
+            <button onclick="switchTab('about')" id="btn-about"
+                class="sidebar-link w-full text-left px-5 py-4 rounded-2xl text-gray-400 hover:text-white hover:bg-white/5 flex items-center gap-4">
+                <span class="material-symbols-outlined text-[22px]">person</span>
+                <span class="text-sm font-medium">Tentang Saya</span>
+            </button>
+            <button onclick="switchTab('skills')" id="btn-skills"
+                class="sidebar-link w-full text-left px-5 py-4 rounded-2xl text-gray-400 hover:text-white hover:bg-white/5 flex items-center gap-4">
+                <span class="material-symbols-outlined text-[22px]">bolt</span>
+                <span class="text-sm font-medium">Keahlian & Teknologi</span>
+            </button>
+            <button onclick="switchTab('projects')" id="btn-projects"
+                class="sidebar-link w-full text-left px-5 py-4 rounded-2xl text-gray-400 hover:text-white hover:bg-white/5 flex items-center gap-4">
+                <span class="material-symbols-outlined text-[22px]">layers</span>
+                <span class="text-sm font-medium">Manajer Proyek</span>
+            </button>
+        </nav>
+
+        <div class="p-6 border-t border-dark-border">
+            <a href="index.html" target="_blank"
+                class="flex items-center gap-3 justify-center w-full py-3.5 bg-white/5 border border-white/10 rounded-2xl text-xs font-bold hover:bg-white hover:text-black transition-all duration-300 uppercase tracking-widest group">
+                <span
+                    class="material-symbols-outlined text-[18px] group-hover:rotate-45 transition-transform">open_in_new</span>
+                Lihat Situs
+            </a>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 flex flex-col bg-dark-bg relative overflow-hidden h-full">
+
+        <!-- Top Bar -->
+        <header
+            class="h-20 border-b border-dark-border flex items-center justify-between px-6 lg:px-10 bg-dark-bg/80 backdrop-blur-xl z-50">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()"
+                    class="lg:hidden w-10 h-10 flex items-center justify-center bg-white/5 rounded-xl border border-white/10">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+                <h2 id="page-title" class="text-xl font-black tracking-tight lg:text-2xl uppercase">Dashboard</h2>
+            </div>
+            <div class="flex items-center gap-4">
+                <button onclick="saveAll()"
+                    class="bg-white text-black px-6 py-3 rounded-2xl text-xs font-black hover:bg-gray-200 transition-all flex items-center gap-3 shadow-lg shadow-white/5 uppercase tracking-wider">
+                    <span class="material-symbols-outlined text-[18px]">save</span>
+                    <span class="hidden sm:inline">Simpan Perubahan</span>
+                    <span class="sm:hidden text-[10px]">Save</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Content Container -->
+        <div class="flex-1 overflow-y-auto p-6 lg:p-10 custom-scrollbar relative">
+
+            <!-- HOME EDITOR -->
+            <section id="tab-home" class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <div class="space-y-8">
+                    <div class="bg-dark-surface p-8 rounded-[32px] border border-dark-border shadow-2xl">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span class="w-2 h-8 bg-white rounded-full"></span>
+                            <h3 class="text-lg font-black uppercase tracking-tight">Hero Section</h3>
+                        </div>
+                        <div class="space-y-6">
+                            <div>
+                                <label
+                                    class="block text-[10px] font-mono text-gray-500 mb-2 uppercase tracking-[0.2em]">Small
+                                    Name Tag</label>
+                                <input type="text" id="home-tag" class="input-field" oninput="updateHomePreview()">
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[10px] font-mono text-cyan-500 mb-2 font-bold uppercase tracking-[0.2em]">Judul
+                                    Utama (Title)</label>
+                                <textarea id="home-title" rows="2" class="input-field text-lg font-bold"
+                                    oninput="updateHomePreview()"></textarea>
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[10px] font-mono text-cyan-500 mb-2 font-bold uppercase tracking-[0.2em]">Subdeskripsi
+                                    / Bio Singkat</label>
+                                <textarea id="home-desc" rows="4" class="input-field"
+                                    oninput="updateHomePreview()"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <div class="sticky top-0">
+                        <h3 class="text-[10px] font-bold mb-4 text-gray-600 uppercase tracking-widest text-center">Live
+                            Preview Mode</h3>
+                        <div
+                            class="bg-black border border-white/5 rounded-[40px] p-10 flex flex-col justify-center items-center text-center min-h-[450px] relative overflow-hidden shadow-inner">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-b from-neutral-900/40 to-black pointer-events-none">
+                            </div>
+                            <div class="relative z-10 flex flex-col items-center max-w-lg">
+                                <div
+                                    class="mb-8 px-5 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
+                                    <span id="prev-home-tag"
+                                        class="text-[10px] font-bold tracking-[0.3em] text-gray-200 uppercase"></span>
+                                </div>
+                                <h1 id="prev-home-title"
+                                    class="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-8 leading-none tracking-tighter uppercase italic">
+                                </h1>
+                                <p id="prev-home-desc"
+                                    class="text-sm md:text-base text-gray-500 font-light leading-relaxed max-w-sm"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ABOUT EDITOR -->
+            <section id="tab-about" class="hidden max-w-7xl mx-auto space-y-10">
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-10">
+                    <div class="bg-dark-surface p-8 rounded-[32px] border border-dark-border">
+                        <h3 class="text-lg font-black mb-6 text-white uppercase tracking-tight">About Me Header</h3>
+                        <div class="space-y-6">
+                            <div>
+                                <label
+                                    class="block text-[10px] font-mono text-gray-500 mb-2 uppercase tracking-widest">Headline
+                                    Utama</label>
+                                <input type="text" id="about-title" class="input-field font-bold text-lg"
+                                    oninput="updateAboutPreview()">
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[10px] font-mono text-gray-500 mb-2 uppercase tracking-widest">Deskripsi
+                                    Lengkap</label>
+                                <textarea id="about-desc" rows="6" class="input-field"
+                                    oninput="updateAboutPreview()"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-[10px] font-bold mb-4 text-gray-600 uppercase tracking-widest">Header Preview
+                        </h3>
+                        <div
+                            class="bg-dark-surface p-10 rounded-[32px] border border-white/5 flex flex-col justify-center min-h-[300px] shadow-xl">
+                            <span
+                                class="text-[10px] font-bold bg-white text-black px-4 py-1.5 rounded-full w-fit mb-6 uppercase tracking-tighter">Available
+                                for Collaborate</span>
+                            <h2 id="prev-about-title"
+                                class="text-4xl lg:text-5xl font-black text-white mb-6 leading-tight tracking-tighter">
+                            </h2>
+                            <p id="prev-about-desc"
+                                class="text-gray-400 leading-relaxed text-sm lg:text-base font-light"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-dark-surface rounded-[32px] border border-dark-border overflow-hidden shadow-2xl">
+                    <div class="flex border-b border-dark-border bg-white/[0.02] overflow-x-auto no-scrollbar">
+                        <button onclick="switchAboutSubTab('education')" id="sub-btn-education"
+                            class="about-tab-btn active px-8 py-5 text-[10px] font-black text-gray-500 hover:text-white border-b-2 border-transparent transition-all uppercase tracking-widest whitespace-nowrap">Pendidikan</button>
+                        <button onclick="switchAboutSubTab('organization')" id="sub-btn-organization"
+                            class="about-tab-btn px-8 py-5 text-[10px] font-black text-gray-500 hover:text-white border-b-2 border-transparent transition-all uppercase tracking-widest whitespace-nowrap">Organisasi</button>
+                        <button onclick="switchAboutSubTab('experience')" id="sub-btn-experience"
+                            class="about-tab-btn px-8 py-5 text-[10px] font-black text-gray-500 hover:text-white border-b-2 border-transparent transition-all uppercase tracking-widest whitespace-nowrap">Pengalaman</button>
+                    </div>
+                    <div class="p-8 lg:p-10 min-h-[500px]">
+                        <div id="sub-tab-education" class="space-y-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <h4 class="text-white font-black text-base uppercase tracking-tight">Riwayat Pendidikan
+                                </h4>
+                                <button onclick="addNewItem('education')"
+                                    class="text-[10px] bg-white text-black px-5 py-2.5 rounded-xl font-black hover:bg-gray-200 uppercase transition-all shadow-md shadow-white/5">+
+                                    Tambah</button>
+                            </div>
+                            <div id="education-list" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+                        </div>
+                        <div id="sub-tab-organization" class="hidden space-y-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <h4 class="text-white font-black text-base uppercase tracking-tight">Riwayat Organisasi
+                                </h4>
+                                <button onclick="addNewItem('organization')"
+                                    class="text-[10px] bg-white text-black px-5 py-2.5 rounded-xl font-black hover:bg-gray-200 uppercase transition-all shadow-md shadow-white/5">+
+                                    Tambah</button>
+                            </div>
+                            <div id="organization-list" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+                        </div>
+                        <div id="sub-tab-experience" class="hidden space-y-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <h4 class="text-white font-black text-base uppercase tracking-tight">Pengalaman Kerja
+                                </h4>
+                                <button onclick="addNewItem('experience')"
+                                    class="text-[10px] bg-white text-black px-5 py-2.5 rounded-xl font-black hover:bg-gray-200 uppercase transition-all shadow-md shadow-white/5">+
+                                    Tambah</button>
+                            </div>
+                            <div id="experience-list" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SKILLS EDITOR -->
+            <section id="tab-skills" class="hidden max-w-7xl mx-auto space-y-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                    <div class="bg-dark-surface p-8 rounded-[32px] border border-dark-border">
+                        <h3 class="text-lg font-black mb-6 text-white uppercase tracking-tight">Skills Headline</h3>
+                        <div class="space-y-6">
+                            <div>
+                                <label
+                                    class="block text-[10px] font-mono text-gray-500 mb-2 uppercase tracking-widest">Main
+                                    Title (EXPERTISE)</label>
+                                <input type="text" id="skills-hero-title" class="input-field font-black uppercase"
+                                    oninput="updateSkillsHeroPreview()">
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[10px] font-mono text-gray-500 mb-2 uppercase tracking-widest">Sub
+                                    Headline</label>
+                                <textarea id="skills-hero-desc" rows="3" class="input-field"
+                                    oninput="updateSkillsHeroPreview()"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-[10px] font-bold mb-4 text-gray-600 uppercase tracking-widest">Header Preview
+                        </h3>
+                        <div
+                            class="flex flex-col items-center justify-center text-center p-10 bg-black border border-white/5 rounded-[32px] min-h-[250px]">
+                            <h2 id="prev-skills-title"
+                                class="text-4xl font-black text-white leading-none mb-4 tracking-tighter italic uppercase">
+                            </h2>
+                            <p id="prev-skills-desc" class="text-gray-500 text-xs lg:text-sm max-w-md font-light"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-8">
+                    <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+                        <h3 class="text-base font-black text-white uppercase tracking-tight">Kategori Skill (Box)</h3>
+                        <button onclick="addSkillBox()"
+                            class="bg-white text-black px-6 py-3 rounded-2xl text-[10px] font-black uppercase flex items-center gap-3 shadow-xl hover:bg-gray-200 transition-all">
+                            <span class="material-symbols-outlined text-lg">add_circle</span> Tambah Kotak Kategori
+                        </button>
+                    </div>
+                    <div id="skills-boxes-editor" class="grid grid-cols-1 xl:grid-cols-2 gap-8"></div>
+                </div>
+            </section>
+
+            <!-- PROJECTS EDITOR -->
+            <section id="tab-projects" class="hidden max-w-7xl mx-auto space-y-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                    <div class="bg-dark-surface p-8 rounded-[32px] border border-dark-border">
+                        <h3 class="text-lg font-black mb-6 text-white uppercase tracking-tight">Projects Headline</h3>
+                        <div class="space-y-6">
+                            <div>
+                                <label
+                                    class="block text-[10px] font-mono text-gray-500 mb-2 uppercase tracking-widest">Main
+                                    Title (Selected Works.)</label>
+                                <input type="text" id="projects-hero-title"
+                                    class="input-field font-black italic uppercase"
+                                    oninput="updateProjectsHeroPreview()">
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[10px] font-mono text-gray-500 mb-2 uppercase tracking-widest">Sub
+                                    Headline Description</label>
+                                <textarea id="projects-hero-desc" rows="3" class="input-field"
+                                    oninput="updateProjectsHeroPreview()"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-[10px] font-bold mb-4 text-gray-600 uppercase tracking-widest text-center">
+                            Header Preview</h3>
+                        <div
+                            class="flex flex-col items-center justify-center text-center p-10 bg-black border border-white/5 rounded-[32px] min-h-[250px]">
+                            <h2 id="prev-projects-hero-title"
+                                class="text-4xl font-black text-white leading-tight mb-4 tracking-tighter uppercase">
+                            </h2>
+                            <p id="prev-projects-hero-desc"
+                                class="text-gray-500 text-xs lg:text-sm max-w-md font-light leading-relaxed"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col lg:flex-row gap-8 h-full min-h-[700px]">
+                    <!-- List Sidebar -->
+                    <div
+                        class="w-full lg:w-[350px] flex flex-col h-full bg-dark-surface rounded-[32px] border border-dark-border overflow-hidden shadow-2xl">
+                        <div class="p-6 border-b border-dark-border flex justify-between items-center bg-white/[0.02]">
+                            <h3 class="font-black text-[11px] text-gray-500 uppercase tracking-[0.2em]">Project List
+                            </h3>
+                            <button onclick="addNewProject()"
+                                class="text-[10px] bg-white text-black px-4 py-2 rounded-xl font-black uppercase hover:bg-gray-200 transition-colors shadow-lg shadow-white/5">
+                                + New
+                            </button>
+                        </div>
+                        <div id="project-list-container"
+                            class="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar max-h-[500px] lg:max-h-none">
+                        </div>
+                    </div>
+
+                    <!-- Editor Panel -->
+                    <div class="flex-1 flex flex-col gap-8">
+                        <div id="project-editor-panel"
+                            class="bg-dark-surface p-8 lg:p-10 rounded-[40px] border border-dark-border hidden shadow-2xl">
+                            <div class="flex items-center gap-3 mb-8 pb-4 border-b border-white/5">
+                                <span class="w-2 h-8 bg-white rounded-full"></span>
+                                <h3 class="text-lg font-black text-white uppercase tracking-tight">Editor Detail Proyek
+                                </h3>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div class="col-span-full">
+                                    <label
+                                        class="block text-[10px] font-mono text-gray-500 mb-2 uppercase tracking-widest">Judul
+                                        Proyek</label>
+                                    <input type="text" id="proj-title" class="input-field font-black"
+                                        oninput="updateProjectPreview()">
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-[10px] font-mono text-gray-500 mb-2 uppercase tracking-widest">Kategori</label>
+                                    <select id="proj-cat" class="input-field" onchange="updateProjectPreview()">
+                                        <option value="web">Web Development</option>
+                                        <option value="iot">IoT Projects</option>
+                                        <option value="photo">Photography</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-[10px] font-mono text-gray-500 mb-2 uppercase tracking-widest">Link
+                                        Gambar (URL)</label>
+                                    <input type="text" id="proj-img" class="input-field text-xs"
+                                        oninput="updateProjectPreview()" placeholder="https://unsplash.com/...">
+                                </div>
+                                <div class="col-span-full">
+                                    <label
+                                        class="block text-[10px] font-mono text-gray-500 mb-2 uppercase tracking-widest font-bold text-cyan-500">Tech
+                                        Stack (Pisahkan Koma)</label>
+                                    <input type="text" id="proj-tech" class="input-field"
+                                        placeholder="React, Tailwind, ESP32, Firebase" oninput="updateProjectPreview()">
+                                </div>
+                                <div class="col-span-full">
+                                    <label
+                                        class="block text-[10px] font-mono text-gray-500 mb-2 uppercase tracking-widest">Deskripsi
+                                        Singkat</label>
+                                    <textarea id="proj-desc" rows="4" class="input-field text-xs leading-relaxed"
+                                        oninput="updateProjectPreview()"></textarea>
+                                </div>
+                            </div>
+                            <div class="mt-10 flex flex-col sm:flex-row justify-end gap-4 pt-8 border-t border-white/5">
+                                <button onclick="deleteCurrentProject()"
+                                    class="text-red-500 hover:bg-red-500/10 text-[10px] px-6 py-3 font-black uppercase rounded-2xl border border-transparent hover:border-red-500/20 transition-all">Hapus
+                                    Proyek</button>
+                                <button onclick="saveCurrentProject()"
+                                    class="bg-white text-black px-8 py-3 rounded-2xl text-[10px] font-black uppercase shadow-xl shadow-white/5 hover:scale-105 transition-all">Update
+                                    Proyek</button>
+                            </div>
+                        </div>
+
+                        <!-- Card Preview -->
+                        <div id="project-preview-container" class="hidden">
+                            <h3
+                                class="text-[10px] font-bold mb-6 text-gray-600 uppercase tracking-widest text-center italic">
+                                Visual Card Preview</h3>
+                            <div class="flex justify-center">
+                                <article class="project-preview-card w-full max-w-sm shadow-2xl shadow-black">
+                                    <div class="relative aspect-video overflow-hidden bg-neutral-900 rounded-t-2xl">
+                                        <img id="prev-proj-img" src="" class="w-full h-full object-cover">
+                                    </div>
+                                    <div
+                                        class="p-8 border-t border-white/5 flex flex-col bg-dark-surface rounded-b-2xl">
+                                        <div id="prev-proj-tech" class="mb-5 flex flex-wrap gap-2"></div>
+                                        <div class="flex justify-between items-start mb-3">
+                                            <span id="prev-proj-cat-label"
+                                                class="text-[9px] font-black text-gray-500 uppercase tracking-[0.2em] font-sans"></span>
+                                            <span class="text-[9px] text-gray-600 font-sans font-bold">EST. 2024</span>
+                                        </div>
+                                        <h3 id="prev-proj-title"
+                                            class="text-xl font-black text-white mb-3 leading-none uppercase tracking-tighter">
+                                        </h3>
+                                        <p id="prev-proj-desc"
+                                            class="text-[11px] text-gray-500 font-light leading-relaxed line-clamp-2">
+                                        </p>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+
+                        <div id="empty-state-proj"
+                            class="flex-1 flex flex-col items-center justify-center border-4 border-dashed border-white/5 rounded-[40px] text-gray-700 font-black text-xs uppercase tracking-[0.5em] p-10 text-center opacity-40">
+                            <span class="material-symbols-outlined text-6xl mb-6">layers</span>
+                            Select a project to start editing
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Notification Toast -->
+    <div id="toast"
+        class="fixed bottom-10 right-10 bg-white text-black px-10 py-5 rounded-[24px] font-black transform translate-y-40 opacity-0 transition-all duration-500 z-[2000] text-xs uppercase shadow-[0_20px_60px_-15px_rgba(255,255,255,0.3)] flex items-center gap-4">
+        <span class="material-symbols-outlined text-black">check_circle</span>
+        <span>Data Berhasil Disinkronkan!</span>
+    </div>
+
+    <script>
+        // --- MOBILE SIDEBAR LOGIC ---
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+
+        // --- DATA STRUCTURE ---
+        let portfolioData = {
+            home: { tag: "FIQRY FIRMANSYAH", title: "IoT & Frontend DEVELOPER", desc: "Building smart connected systems with beautiful user experiences." },
+            about: {
+                title: "Creating Digital Masterpieces.",
+                desc: "A passionate developer focused on building scalable backend systems and beautiful, interactive frontends.",
+                education: [], organization: [], experience: []
+            },
+            skills: {
+                title: "EXPERTISE & TECHNOLOGIES",
+                desc: "Crafting digital experiences with Frontend Precision and connecting the physical world with IoT Intelligence.",
+                categories: [
+                    { id: 1, title: "FRONTEND", icon: "code", desc: "Architecting immersive web interfaces with modern reactive frameworks.", techs: ["React JS", "Tailwind", "Next.js"] },
+                    { id: 2, title: "IOT & EMBEDDED", icon: "memory", desc: "Connecting hardware to the cloud via MQTT & HTTP.", techs: ["ESP32", "C++", "MQTT"] }
+                ]
+            },
+            projects: {
+                title: "Selected Works.",
+                desc: "Curated projects exploring Web, IoT Innovations, and Photography.",
+                items: [
+                    { id: 1, title: "Smart Admin Dash", category: "web", desc: "A comprehensive admin panel designed for data visualization.", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80", tech: "React, Tailwind, Node.js" }
+                ]
+            }
+        };
+
+        if (localStorage.getItem('portfolioData')) {
+            portfolioData = JSON.parse(localStorage.getItem('portfolioData'));
+        }
+
+        // --- NAVIGATION ---
+        function switchTab(tabName) {
+            document.querySelectorAll('.sidebar-link').forEach(el => el.classList.remove('active'));
+            document.getElementById(`btn-${tabName}`).classList.add('active');
+            document.querySelectorAll('section').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+
+            if (tabName === 'home') updateHomePreview();
+            if (tabName === 'about') { updateAboutPreview(); renderEducation(); renderOrganization(); renderExperience(); }
+            if (tabName === 'skills') { updateSkillsHeroPreview(); renderSkillsBoxes(); }
+            if (tabName === 'projects') { updateProjectsHeroPreview(); renderProjectList(); }
+
+            document.getElementById('page-title').innerText = tabName.charAt(0).toUpperCase() + tabName.slice(1);
+
+            // Close mobile sidebar after click
+            if (window.innerWidth < 1024) toggleSidebar();
+        }
+
+        // --- HOME LOGIC ---
+        function updateHomePreview() {
+            const h = portfolioData.home;
+            const fields = ['home-tag', 'home-title', 'home-desc'];
+            fields.forEach(f => {
+                const el = document.getElementById(f);
+                if (el.value === "") el.value = h[f.split('-')[1]] || "";
+                else h[f.split('-')[1]] = el.value;
+            });
+            document.getElementById('prev-home-tag').innerText = h.tag;
+            document.getElementById('prev-home-title').innerHTML = (h.title || "").replace('DEVELOPER', '<br><span class="text-5xl md:text-6xl lg:text-8xl opacity-30 italic">DEVELOPER</span>');
+            document.getElementById('prev-home-desc').innerText = h.desc;
+        }
+
+        // --- ABOUT LOGIC ---
+        function updateAboutPreview() {
+            const a = portfolioData.about;
+            if (document.getElementById('about-title').value === "") {
+                document.getElementById('about-title').value = a.title;
+                document.getElementById('about-desc').value = a.desc;
+            } else {
+                a.title = document.getElementById('about-title').value;
+                a.desc = document.getElementById('about-desc').value;
+            }
+            document.getElementById('prev-about-title').innerText = a.title;
+            document.getElementById('prev-about-desc').innerText = a.desc;
+        }
+        function switchAboutSubTab(t) {
+            document.querySelectorAll('.about-tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`sub-btn-${t}`).classList.add('active');
+            ['education', 'organization', 'experience'].forEach(s => document.getElementById(`sub-tab-${s}`).classList.add('hidden'));
+            document.getElementById(`sub-tab-${t}`).classList.remove('hidden');
+        }
+        function addNewItem(type) { portfolioData.about[type].push({ id: Date.now(), school: "Institusi", degree: "Gelar", year: "2024", desc: "Deskripsi", status: "Aktif", name: "Organisasi", role: "Posisi", company: "Perusahaan" }); if (type === 'education') renderEducation(); if (type === 'organization') renderOrganization(); if (type === 'experience') renderExperience(); }
+        function deleteItem(type, id) { if (confirm("Hapus item ini?")) { portfolioData.about[type] = portfolioData.about[type].filter(x => x.id !== id); if (type === 'education') renderEducation(); if (type === 'organization') renderOrganization(); if (type === 'experience') renderExperience(); } }
+        function editItem(type, id, f, v) { let i = portfolioData.about[type].find(x => x.id === id); if (i) i[f] = v; }
+
+        function renderEducation() {
+            const list = document.getElementById('education-list'); list.innerHTML = '';
+            portfolioData.about.education.forEach(e => {
+                const el = document.createElement('div');
+                el.className = 'bg-white/[0.03] p-6 rounded-[24px] border border-white/5 relative group hover:border-white/10 transition-all';
+                el.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="text-[9px] font-black bg-white text-black px-3 py-1 rounded-lg uppercase tracking-widest">${e.status}</span>
+                        <input oninput="editItem('education', ${e.id}, 'year', this.value)" value="${e.year}" class="text-[10px] text-gray-500 bg-transparent text-right w-24 font-mono">
+                    </div>
+                    <input oninput="editItem('education', ${e.id}, 'school', this.value)" value="${e.school}" class="block w-full bg-transparent font-black text-white text-lg mb-1 uppercase tracking-tighter">
+                    <input oninput="editItem('education', ${e.id}, 'degree', this.value)" value="${e.degree}" class="block w-full bg-transparent font-mono text-[10px] text-gray-500 mb-4 uppercase tracking-widest">
+                    <textarea oninput="editItem('education', ${e.id}, 'desc', this.value)" class="w-full bg-black/40 text-xs text-gray-500 resize-none focus:outline-none p-4 rounded-2xl border border-white/5" rows="2">${e.desc}</textarea>
+                    <button onclick="deleteItem('education', ${e.id})" class="absolute -top-3 -right-3 w-8 h-8 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-all shadow-xl flex items-center justify-center"><span class="material-symbols-outlined text-sm">close</span></button>`;
+                list.appendChild(el);
+            });
+        }
+
+        function renderOrganization() {
+            const list = document.getElementById('organization-list'); list.innerHTML = '';
+            portfolioData.about.organization.forEach(o => {
+                const el = document.createElement('div');
+                el.className = 'bg-white/[0.03] p-6 rounded-[24px] border border-white/5 relative group hover:border-white/10 transition-all';
+                el.innerHTML = `
+                    <input oninput="editItem('organization', ${o.id}, 'name', this.value)" value="${o.name}" class="block w-full bg-transparent font-black text-white text-base mb-1 uppercase">
+                    <input oninput="editItem('organization', ${o.id}, 'role', this.value)" value="${o.role}" class="block w-full bg-transparent text-[9px] text-cyan-500 uppercase tracking-[0.3em] font-mono mb-4">
+                    <textarea oninput="editItem('organization', ${o.id}, 'desc', this.value)" class="w-full bg-black/40 text-xs text-gray-500 resize-none focus:outline-none p-4 rounded-2xl border border-white/5" rows="2">${o.desc}</textarea>
+                    <button onclick="deleteItem('organization', ${o.id})" class="absolute -top-3 -right-3 w-8 h-8 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center"><span class="material-symbols-outlined text-sm">close</span></button>`;
+                list.appendChild(el);
+            });
+        }
+
+        function renderExperience() {
+            const list = document.getElementById('experience-list'); list.innerHTML = '';
+            portfolioData.about.experience.forEach(e => {
+                const el = document.createElement('div');
+                el.className = 'bg-white/[0.03] p-6 rounded-[24px] border border-white/5 relative group hover:border-white/10 transition-all';
+                el.innerHTML = `
+                    <div class="flex justify-between items-center mb-4">
+                        <input oninput="editItem('experience', ${e.id}, 'year', this.value)" value="${e.year}" class="text-[10px] text-gray-500 bg-transparent w-24 font-mono">
+                        <span class="material-symbols-outlined text-gray-600 text-lg">work</span>
+                    </div>
+                    <input oninput="editItem('experience', ${e.id}, 'role', this.value)" value="${e.role}" class="block w-full bg-transparent font-black text-white text-lg mb-1 uppercase tracking-tighter">
+                    <input oninput="editItem('experience', ${e.id}, 'company', this.value)" value="${e.company}" class="block w-full bg-transparent font-mono text-[10px] text-cyan-500 mb-4 uppercase tracking-widest">
+                    <textarea oninput="editItem('experience', ${e.id}, 'desc', this.value)" class="w-full bg-black/40 text-xs text-gray-500 resize-none focus:outline-none p-4 rounded-2xl border border-white/5" rows="2">${e.desc}</textarea>
+                    <button onclick="deleteItem('experience', ${e.id})" class="absolute -top-3 -right-3 w-8 h-8 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center"><span class="material-symbols-outlined text-sm">close</span></button>`;
+                list.appendChild(el);
+            });
+        }
+
+        // --- SKILLS LOGIC ---
+        function updateSkillsHeroPreview() { const s = portfolioData.skills; if (document.getElementById('skills-hero-title').value === "") { document.getElementById('skills-hero-title').value = s.title; document.getElementById('skills-hero-desc').value = s.desc; } else { s.title = document.getElementById('skills-hero-title').value; s.desc = document.getElementById('skills-hero-desc').value; } document.getElementById('prev-skills-title').innerText = s.title; document.getElementById('prev-skills-desc').innerText = s.desc; }
+
+        function renderSkillsBoxes() {
+            const container = document.getElementById('skills-boxes-editor'); container.innerHTML = '';
+            portfolioData.skills.categories.forEach(cat => {
+                const el = document.createElement('div');
+                el.className = 'bg-white/[0.02] border border-white/10 rounded-[32px] p-8 flex flex-col gap-6 relative group hover:bg-white/[0.04] transition-all';
+                el.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div class="w-14 h-14 bg-white/5 rounded-[20px] flex items-center justify-center border border-white/10 shadow-lg shadow-black">
+                            <span class="material-symbols-outlined text-2xl text-white">${cat.icon}</span>
+                        </div>
+                        <button onclick="deleteSkillBox(${cat.id})" class="text-gray-700 hover:text-red-500 transition-colors"><span class="material-symbols-outlined">delete_forever</span></button>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[9px] font-mono text-gray-600 mb-2 uppercase tracking-widest">Nama Kategori</label>
+                            <input oninput="updateSkillBox(${cat.id}, 'title', this.value)" value="${cat.title}" class="input-field font-black uppercase">
+                        </div>
+                        <div>
+                            <label class="block text-[9px] font-mono text-gray-600 mb-2 uppercase tracking-widest">Material Icon</label>
+                            <input oninput="updateSkillBox(${cat.id}, 'icon', this.value)" value="${cat.icon}" class="input-field font-mono text-xs" placeholder="e.g. code">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            ${cat.techs.map((t, idx) => `<span class="bg-white/5 border border-white/10 px-3 py-1.5 rounded-xl text-[10px] font-bold flex items-center gap-2 uppercase tracking-tighter">${t}<button onclick="removeTechFromBox(${cat.id}, ${idx})" class="text-red-500 font-black">×</button></span>`).join('')}
+                        </div>
+                        <button onclick="addTechToBox(${cat.id})" class="w-full py-3 border-2 border-dashed border-white/10 rounded-2xl text-[10px] font-black text-gray-600 hover:text-white hover:border-white/30 transition-all uppercase tracking-widest">+ Tambah Teknologi</button>
+                    </div>`;
+                container.appendChild(el);
+            });
+        }
+        function addSkillBox() { portfolioData.skills.categories.push({ id: Date.now(), title: "BARU", icon: "bolt", desc: "Deskripsi", techs: ["HTML"] }); renderSkillsBoxes(); }
+        function deleteSkillBox(id) { if (confirm("Hapus kategori?")) { portfolioData.skills.categories = portfolioData.skills.categories.filter(x => x.id !== id); renderSkillsBoxes(); } }
+        function updateSkillBox(id, f, v) { let b = portfolioData.skills.categories.find(x => x.id === id); if (b) b[f] = v; }
+        function addTechToBox(id) { let t = prompt("Nama Teknologi:"); if (t) { let b = portfolioData.skills.categories.find(x => x.id === id); if (b) { b.techs.push(t); renderSkillsBoxes(); } } }
+        function removeTechFromBox(id, idx) { let b = portfolioData.skills.categories.find(x => x.id === id); if (b) { b.techs.splice(idx, 1); renderSkillsBoxes(); } }
+
+        // --- PROJECTS LOGIC ---
+        let currentEditingProjId = null;
+        function updateProjectsHeroPreview() { const p = portfolioData.projects; if (document.getElementById('projects-hero-title').value === "") { document.getElementById('projects-hero-title').value = p.title; document.getElementById('projects-hero-desc').value = p.desc; } else { p.title = document.getElementById('projects-hero-title').value; p.desc = document.getElementById('projects-hero-desc').value; } document.getElementById('prev-projects-hero-title').innerText = p.title; document.getElementById('prev-projects-hero-desc').innerText = p.desc; }
+
+        function renderProjectList() {
+            const list = document.getElementById('project-list-container'); list.innerHTML = '';
+            portfolioData.projects.items.forEach(p => {
+                const item = document.createElement('div');
+                item.className = `p-4 rounded-2xl hover:bg-white/5 cursor-pointer flex justify-between items-center group transition-all border border-transparent ${currentEditingProjId === p.id ? 'bg-white/10 border-white/20 scale-[1.02]' : ''}`;
+                item.innerHTML = `<div class="flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-black border border-white/5 overflow-hidden"><img src="${p.img}" class="w-full h-full object-cover grayscale opacity-30 group-hover:opacity-100 transition-all"></div><div><div class="font-black text-xs text-white uppercase tracking-tighter">${p.title}</div><div class="text-[9px] text-gray-600 uppercase font-mono tracking-widest">${p.category}</div></div></div><span class="material-symbols-outlined text-gray-700 group-hover:text-white text-base">chevron_right</span>`;
+                item.onclick = () => editProject(p.id);
+                list.appendChild(item);
+            });
+        }
+        function addNewProject() { const newId = Date.now(); portfolioData.projects.items.push({ id: newId, title: "Proyek Baru", category: "web", desc: "Detail proyek...", img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80", tech: "React, Tailwind" }); renderProjectList(); editProject(newId); }
+
+        function editProject(id) {
+            currentEditingProjId = id; const p = portfolioData.projects.items.find(x => x.id === id);
+            document.getElementById('empty-state-proj').classList.add('hidden');
+            document.getElementById('project-editor-panel').classList.remove('hidden');
+            document.getElementById('project-preview-container').classList.remove('hidden');
+            document.getElementById('proj-title').value = p.title; document.getElementById('proj-cat').value = p.category;
+            document.getElementById('proj-img').value = p.img; document.getElementById('proj-desc').value = p.desc;
+            document.getElementById('proj-tech').value = p.tech;
+            renderProjectList(); updateProjectPreview();
+
+            // Scroll to editor on mobile
+            if (window.innerWidth < 1024) {
+                document.getElementById('project-editor-panel').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function updateProjectPreview() {
+            const p = portfolioData.projects.items.find(x => x.id === currentEditingProjId); if (!p) return;
+            p.title = document.getElementById('proj-title').value; p.category = document.getElementById('proj-cat').value;
+            p.img = document.getElementById('proj-img').value; p.desc = document.getElementById('proj-desc').value;
+            p.tech = document.getElementById('proj-tech').value;
+            document.getElementById('prev-proj-title').innerText = p.title; document.getElementById('prev-proj-desc').innerText = p.desc;
+            document.getElementById('prev-proj-img').src = p.img;
+            document.getElementById('prev-proj-cat-label').innerText = p.category === 'iot' ? 'IoT Innovations' : (p.category === 'photo' ? 'Photography' : 'Web Engineering');
+            const techCont = document.getElementById('prev-proj-tech'); techCont.innerHTML = '';
+            p.tech.split(',').forEach(t => {
+                const tag = document.createElement('span');
+                const tClean = t.trim().toLowerCase();
+                let color = 'bg-white/5 text-gray-400 border-white/10';
+                if (tClean.includes('react') || tClean.includes('next')) color = 'bg-blue-500/10 text-blue-400 border-blue-500/20';
+                if (tClean.includes('esp') || tClean.includes('mqtt')) color = 'bg-red-500/10 text-red-400 border-red-500/20';
+                tag.className = `text-[8px] font-black px-3 py-1 rounded-lg border uppercase tracking-wider ${color}`;
+                tag.textContent = t.trim(); techCont.appendChild(tag);
+            });
+        }
+
+        function saveCurrentProject() { renderProjectList(); showToast("Proyek diperbarui!"); }
+        function deleteCurrentProject() { if (confirm("Hapus permanen?")) { portfolioData.projects.items = portfolioData.projects.items.filter(p => p.id !== currentEditingProjId); currentEditingProjId = null; renderProjectList(); document.getElementById('project-editor-panel').classList.add('hidden'); document.getElementById('project-preview-container').classList.add('hidden'); document.getElementById('empty-state-proj').classList.remove('hidden'); } }
+
+        // --- GLOBAL LOGIC ---
+        function saveAll() {
+            localStorage.setItem('portfolioData', JSON.stringify(portfolioData));
+            showToast("Semua perubahan telah disinkronkan ke situs!");
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.querySelector('span:last-child').innerText = msg;
+            toast.classList.remove('translate-y-40', 'opacity-0');
+            setTimeout(() => { toast.classList.add('translate-y-40', 'opacity-0'); }, 3000);
+        }
+
+        window.onload = () => switchTab('home');
+    </script>
+</body>
+
+</html>

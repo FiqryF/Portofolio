@@ -9,7 +9,8 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet">
     <!-- Icons -->
     <link rel="stylesheet"
@@ -34,6 +35,7 @@
                     },
                     fontFamily: {
                         sans: ['Montserrat', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
                     },
                     animation: {
                         'gradient-x': 'gradient-x 15s ease infinite',
@@ -102,27 +104,136 @@
             }
         }
 
-        /* Glass Effect */
-        .glass {
+        /* Project Card Styling */
+        .project-card {
+            position: relative;
+            background: rgba(10, 10, 10, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .project-card img {
+            transition: transform 0.6s ease, filter 0.4s ease;
+            filter: grayscale(100%) brightness(0.8);
+        }
+
+        /* UPDATED: Removed scale(1.03) to stop zoom on hover */
+        .project-card:hover img {
+            filter: grayscale(0%) brightness(1);
+        }
+
+        /* Category Button Styling */
+        .category-btn {
+            position: relative;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 99px;
+            padding: 0.6rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #a3a3a3;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            letter-spacing: 0.02em;
+        }
+
+        .category-btn:hover {
             background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.4);
         }
 
-        .glass-card {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.4s ease;
+        .category-btn.active {
+            background: #ffffff;
+            border-color: #ffffff;
+            color: #000000;
+            font-weight: 700;
         }
 
-        .glass-card:hover {
+        /* Tech Tag Styling */
+        .tech-tag {
+            font-size: 0.65rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            padding: 0.35rem 0.75rem;
+            border-radius: 8px;
+            border: 1px solid;
+            display: inline-block;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: default;
+        }
+
+        .tech-tag:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+            z-index: 10;
+        }
+
+        /* --- PROFESSIONAL MODAL ANIMATIONS --- */
+        #projectModal {
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        #projectModal.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        #projectModal:not(.hidden) {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            /* Initial State */
+            transform: translateY(20px) scale(0.96);
+            opacity: 0;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+        }
+
+        #projectModal:not(.hidden) .modal-content {
+            /* Active State */
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        /* Custom Scrollbar for Modal */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
             background: rgba(255, 255, 255, 0.05);
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.3);
         }
 
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Nav & Animation Utilities */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
@@ -134,7 +245,6 @@
             transform: translateY(0);
         }
 
-        /* Nebula/Aurora */
         .nebula {
             position: absolute;
             filter: blur(100px);
@@ -153,44 +263,31 @@
             }
         }
 
-        /* Header Animation */
         nav {
             position: fixed;
             top: 1.5rem;
             left: 50%;
-            transform: translateX(-50%) translateY(0);
-            width: auto;
-            min-width: 320px;
-            max-width: 800px;
+            transform: translateX(-50%);
             width: 90%;
+            max-width: 1000px;
             border-radius: 999px;
             background: rgba(5, 5, 5, 0.8);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
             z-index: 1000;
             opacity: 0;
             visibility: hidden;
-            transform: translateX(-50%) translateY(-100px);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         body.loaded nav {
             opacity: 1;
             visibility: visible;
-            transform: translateX(-50%) translateY(0);
         }
 
         nav.scrolled {
-            top: 1.5rem;
-            background: rgba(5, 5, 5, 0.9);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        body.exiting nav {
-            transform: translateX(-50%) translateY(-100px);
-            opacity: 0;
+            background: rgba(5, 5, 5, 0.95);
         }
 
         .nav-icon {
@@ -200,26 +297,17 @@
             width: 2.5rem;
             height: 2.5rem;
             border-radius: 9999px;
-            transition-property: all;
-            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-            transition-duration: 300ms;
             background: rgba(255, 255, 255, 0.05);
             color: rgba(255, 255, 255, 0.6);
+            transition: 300ms;
         }
 
-        .nav-icon:hover {
-            background: rgba(255, 255, 255, 0.15);
-            color: #ffffff;
-            transform: translateY(-2px);
-        }
-
+        .nav-icon:hover,
         .nav-icon.active {
             background: #ffffff;
             color: #000000;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
         }
 
-        /* Minimalist Hamburger */
         .hamburger {
             width: 30px;
             height: 20px;
@@ -228,7 +316,6 @@
             z-index: 1100;
         }
 
-        /* Overlay Menu */
         .menu-overlay {
             position: fixed;
             inset: 0;
@@ -240,7 +327,7 @@
             justify-content: center;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.5s;
         }
 
         .menu-overlay.active {
@@ -257,7 +344,6 @@
             border-radius: 9px;
             opacity: 1;
             left: 0;
-            transform: rotate(0deg);
             transition: all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
         }
 
@@ -293,12 +379,11 @@
             font-weight: 800;
             color: #ffffff;
             text-transform: uppercase;
-            letter-spacing: -0.05em;
             display: block;
             margin: 0.5rem 0;
             transform: translateY(50px);
             opacity: 0;
-            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: all 0.6s;
         }
 
         .menu-overlay.active .menu-links a {
@@ -326,55 +411,21 @@
             transition-delay: 0.4s;
         }
 
-        .menu-links a {
-            font-size: clamp(3rem, 10vw, 5rem);
-            font-weight: 800;
-            color: #ffffff;
-            text-transform: uppercase;
-            letter-spacing: -0.05em;
-            display: block;
-            margin: 0.5rem 0;
-            transform: translateY(50px);
-            opacity: 0;
-            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        .menu-overlay.active .menu-links a {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .menu-links a:hover {
-            color: #a3a3a3;
-        }
-
-        .menu-links a:nth-child(1) {
-            transition-delay: 0.1s;
-        }
-
-        .menu-links a:nth-child(2) {
-            transition-delay: 0.2s;
-        }
-
-        .menu-links a:nth-child(3) {
-            transition-delay: 0.3s;
-        }
-
-        .menu-links a:nth-child(4) {
-            transition-delay: 0.4s;
+        .project-item[hidden] {
+            display: none;
         }
     </style>
 </head>
 
-<body class="antialiased min-h-screen relative text-white">
+<body class="antialiased min-h-screen relative text-white flex flex-col">
 
     <!-- Transition Curtain -->
     <div id="transitionCurtain"></div>
 
-    <!-- Fixed Background for Animation -->
+    <!-- Fixed Background -->
     <div class="bg-animated-gradient"></div>
 
-    <!-- Nebula Background -->
+    <!-- Nebula -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none">
         <div class="nebula w-[600px] h-[600px] bg-white/5 rounded-full top-[-10%] left-[-10%]"></div>
         <div class="nebula w-[500px] h-[500px] bg-gray-500/5 rounded-full bottom-[-10%] right-[-10%]"></div>
@@ -382,7 +433,7 @@
 
     <!-- Navigation -->
     <nav id="navbar">
-        <div class="px-6 py-3 flex justify-between items-center gap-12" id="navContainer">
+        <div class="px-6 py-3 flex justify-between items-center gap-12">
             <a href="index.html" class="group cursor-pointer transition-link flex items-center shrink-0">
                 <img src="logo-edelweiss.png" alt="Fiqry Logo"
                     class="h-10 w-10 object-contain transition-all group-hover:scale-110">
@@ -390,25 +441,19 @@
 
             <!-- Desktop Icon Navigation -->
             <div class="hidden md:flex items-center gap-3">
-                <a href="index.html" class="nav-icon transition-link" title="Home">
-                    <span class="material-symbols-outlined text-[20px]">home</span>
-                </a>
-                <a href="about.html" class="nav-icon transition-link" title="About">
-                    <span class="material-symbols-outlined text-[20px]">person</span>
-                </a>
-                <a href="skills.html" class="nav-icon transition-link" title="Skills">
-                    <span class="material-symbols-outlined text-[20px]">bolt</span>
-                </a>
-                <a href="projects.html" class="nav-icon active transition-link" title="Projects">
-                    <span class="material-symbols-outlined text-[20px]">layers</span>
-                </a>
+                <a href="index.html" class="nav-icon transition-link" title="Home"><span
+                        class="material-symbols-outlined text-[20px]">home</span></a>
+                <a href="about.html" class="nav-icon transition-link" title="About"><span
+                        class="material-symbols-outlined text-[20px]">person</span></a>
+                <a href="skills.html" class="nav-icon transition-link" title="Skills"><span
+                        class="material-symbols-outlined text-[20px]">bolt</span></a>
+                <a href="projects.html" class="nav-icon active transition-link" title="Projects"><span
+                        class="material-symbols-outlined text-[20px]">layers</span></a>
             </div>
 
             <!-- Mobile Hamburger -->
             <div class="hamburger md:hidden shrink-0" id="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
+                <span></span><span></span><span></span>
             </div>
         </div>
     </nav>
@@ -423,218 +468,534 @@
         </div>
     </div>
 
-    <!-- Projects Section -->
-    <section class="min-h-screen pt-32 pb-20 container mx-auto px-6 relative z-10">
-        <div class="mb-14 flex flex-col md:flex-row md:items-end justify-between gap-6 reveal">
-            <div>
-                <span class="text-gray-500 font-bold tracking-widest uppercase text-xs">Selected Portfolio</span>
-                <h2 class="text-5xl font-black text-white mt-3 tracking-tighter">My Work</h2>
-            </div>
+    <!-- Main Content -->
+    <main class="pt-32 pb-20 px-6 max-w-7xl mx-auto relative z-10 flex-grow">
 
-            <!-- Filters -->
-            <div class="flex flex-wrap gap-3" id="portfolio-filters">
-                <button
-                    class="filter-btn active px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 bg-white text-black"
-                    data-filter="all">All</button>
-                <button
-                    class="filter-btn px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/10"
-                    data-filter="coding">Coding</button>
-                <button
-                    class="filter-btn px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/10"
-                    data-filter="design">Design</button>
-                <button
-                    class="filter-btn px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/10"
-                    data-filter="photo">Photography</button>
-            </div>
+        <!-- Header -->
+        <div class="mb-10 reveal text-center">
+            <h1 class="text-3xl md:text-5xl font-black tracking-tight mb-3">Selected <span
+                    class="text-gray-500">Works.</span></h1>
+            <p class="text-gray-400 max-w-lg mx-auto font-light text-xs md:text-sm">
+                Curated projects exploring Web, IoT Innovations, and Photography.
+            </p>
         </div>
 
-        <!-- Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-left pb-20" id="projects-grid">
+        <!-- Category Selector -->
+        <div class="flex flex-wrap justify-center gap-3 mb-16 reveal" style="transition-delay: 100ms;">
+            <button class="category-btn active" onclick="filterProjects('web', this)">
+                <span class="material-symbols-outlined text-[16px]">code</span>
+                Web Dev
+            </button>
+            <button class="category-btn" onclick="filterProjects('iot', this)">
+                <span class="material-symbols-outlined text-[16px]">memory</span>
+                IoT Projects
+            </button>
+            <button class="category-btn" onclick="filterProjects('photo', this)">
+                <span class="material-symbols-outlined text-[16px]">camera_alt</span>
+                Photography
+            </button>
+        </div>
 
-            <!-- Project 1 -->
-            <article class="project-item group reveal" data-category="coding">
-                <div class="glass-card rounded-[32px] overflow-hidden relative aspect-[4/3] mb-6 cursor-pointer">
-                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                        alt="Dashboard"
-                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0">
+        <!-- Projects Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="projects-grid">
+
+            <!-- WEB PROJECTS -->
+            <article class="project-card group reveal project-item" onclick="openModal(this)" data-category="web"
+                data-title="Smart Admin Dash"
+                data-desc="A comprehensive admin panel designed for data visualization. Built with React and Node.js to provide real-time updates via WebSockets. Features include dark mode, user management, and exportable reports."
+                data-image="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+                data-tech="React,Tailwind,Node.js,MongoDB" data-repo="#" data-demo="#">
+                <div class="relative aspect-video overflow-hidden bg-neutral-900 pointer-events-none">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                        class="w-full h-full object-cover">
                     <div
-                        class="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                         <span
-                            class="px-8 py-3 bg-white text-black rounded-full font-bold text-xs uppercase tracking-widest transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">View
-                            Project →</span>
+                            class="text-xs font-bold tracking-widest uppercase text-white border border-white/50 px-3 py-1 rounded-full backdrop-blur-sm">View
+                            Details</span>
                     </div>
                 </div>
-                <div class="px-2">
-                    <span class="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] mb-2 block">Coding /
-                        IoT</span>
+                <div class="p-5 border-t border-white/5 flex flex-col pointer-events-none">
+                    <div class="mb-4 flex flex-wrap gap-2">
+                        <span class="tech-tag bg-blue-500/10 text-blue-400 border-blue-500/20">React</span>
+                        <span class="tech-tag bg-cyan-500/10 text-cyan-400 border-cyan-500/20">Tailwind</span>
+                        <span class="tech-tag bg-green-500/10 text-green-400 border-green-500/20">Node.js</span>
+                    </div>
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Web App</span>
+                        <span class="text-[10px] text-gray-500 font-sans">2024</span>
+                    </div>
                     <h3
-                        class="text-2xl font-bold text-white group-hover:text-gray-300 transition-colors tracking-tight">
-                        Neo-Dashboard</h3>
-                    <p class="text-gray-400 text-sm mt-3 font-light leading-relaxed line-clamp-2">A React admin
-                        dashboard with real-time data
-                        visualization and smart system monitoring.</p>
+                        class="text-lg font-bold text-white mb-2 leading-tight group-hover:text-cyan-400 transition-colors">
+                        Smart Admin Dash</h3>
+                    <p class="text-xs text-gray-400 font-light leading-relaxed line-clamp-2">Comprehensive admin panel
+                        with real-time data visualization and reporting tools.</p>
                 </div>
             </article>
 
-            <!-- Project 2 -->
-            <article class="project-item group reveal" data-category="design">
-                <div class="glass-card rounded-[32px] overflow-hidden relative aspect-[4/3] mb-6 cursor-pointer">
-                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                        alt="App Design"
-                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0">
+            <article class="project-card group reveal project-item" onclick="openModal(this)" data-category="web"
+                data-title="Luxe Furniture"
+                data-desc="Modern e-commerce platform built for high-end furniture retail. Features seamless checkout with Stripe integration, inventory management, and a highly responsive design."
+                data-image="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+                data-tech="Next.js,Firebase,Stripe,Tailwind" data-repo="#" data-demo="#">
+                <div class="relative aspect-video overflow-hidden bg-neutral-900 pointer-events-none">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                        class="w-full h-full object-cover">
                     <div
-                        class="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                         <span
-                            class="px-8 py-3 bg-white text-black rounded-full font-bold text-xs uppercase tracking-widest transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">View
-                            Project →</span>
+                            class="text-xs font-bold tracking-widest uppercase text-white border border-white/50 px-3 py-1 rounded-full backdrop-blur-sm">View
+                            Details</span>
                     </div>
                 </div>
-                <div class="px-2">
-                    <span class="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] mb-2 block">Design /
-                        UI</span>
+                <div class="p-5 border-t border-white/5 flex flex-col pointer-events-none">
+                    <div class="mb-4 flex flex-wrap gap-2">
+                        <span class="tech-tag bg-white/10 text-white border-white/20">Next.js</span>
+                        <span class="tech-tag bg-yellow-500/10 text-yellow-400 border-yellow-500/20">Firebase</span>
+                        <span class="tech-tag bg-pink-500/10 text-pink-400 border-pink-500/20">Stripe</span>
+                    </div>
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">E-Commerce</span>
+                        <span class="text-[10px] text-gray-500 font-sans">2023</span>
+                    </div>
                     <h3
-                        class="text-2xl font-bold text-white group-hover:text-gray-300 transition-colors tracking-tight">
-                        Mobile
-                        Banking UI</h3>
-                    <p class="text-gray-400 text-sm mt-3 font-light leading-relaxed line-clamp-2">Clean, minimal styling
-                        for a fintech mobile
-                        application focused on premium usability.</p>
+                        class="text-lg font-bold text-white mb-2 leading-tight group-hover:text-cyan-400 transition-colors">
+                        Luxe Furniture</h3>
+                    <p class="text-xs text-gray-400 font-light leading-relaxed line-clamp-2">Modern platform built with
+                        Next.js featuring seamless checkout and inventory management.</p>
                 </div>
             </article>
 
-            <!-- Project 3 -->
-            <article class="project-item group reveal" data-category="photo">
-                <div class="glass-card rounded-[32px] overflow-hidden relative aspect-[4/3] mb-6 cursor-pointer">
+            <article class="project-card group reveal project-item" onclick="openModal(this)" data-category="web"
+                data-title="TechAgency Corp"
+                data-desc="A high-performance landing page for a creative agency. Utilizes WebGL for immersive background effects and GSAP for scroll-triggered animations."
+                data-image="https://images.unsplash.com/photo-1555421689-492a6c368819?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+                data-tech="Vue.js,GSAP,Three.js" data-repo="#" data-demo="#">
+                <div class="relative aspect-video overflow-hidden bg-neutral-900 pointer-events-none">
+                    <img src="https://images.unsplash.com/photo-1555421689-492a6c368819?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                        class="w-full h-full object-cover">
+                    <div
+                        class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <span
+                            class="text-xs font-bold tracking-widest uppercase text-white border border-white/50 px-3 py-1 rounded-full backdrop-blur-sm">View
+                            Details</span>
+                    </div>
+                </div>
+                <div class="p-5 border-t border-white/5 flex flex-col pointer-events-none">
+                    <div class="mb-4 flex flex-wrap gap-2">
+                        <span class="tech-tag bg-green-500/10 text-green-400 border-green-500/20">Vue.js</span>
+                        <span class="tech-tag bg-purple-500/10 text-purple-400 border-purple-500/20">GSAP</span>
+                    </div>
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Landing Page</span>
+                        <span class="text-[10px] text-gray-500 font-sans">2023</span>
+                    </div>
+                    <h3
+                        class="text-lg font-bold text-white mb-2 leading-tight group-hover:text-cyan-400 transition-colors">
+                        TechAgency Corp</h3>
+                    <p class="text-xs text-gray-400 font-light leading-relaxed line-clamp-2">High-performance landing
+                        page with WebGL animations and responsive grid.</p>
+                </div>
+            </article>
+
+            <!-- IOT PROJECTS -->
+            <article class="project-card group reveal project-item" hidden onclick="openModal(this)" data-category="iot"
+                data-title="Smart Plant Waterer"
+                data-desc="Automated irrigation system that monitors soil moisture levels. It automatically waters plants when needed and sends real-time data to a mobile app via Blynk."
+                data-image="https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+                data-tech="ESP32,C++,Blynk,Sensors" data-repo="#" data-demo="#">
+                <div class="relative aspect-video overflow-hidden bg-neutral-900 pointer-events-none">
+                    <img src="https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                        class="w-full h-full object-cover">
+                    <div
+                        class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <span
+                            class="text-xs font-bold tracking-widest uppercase text-white border border-white/50 px-3 py-1 rounded-full backdrop-blur-sm">View
+                            Details</span>
+                    </div>
+                </div>
+                <div class="p-5 border-t border-white/5 flex flex-col pointer-events-none">
+                    <div class="mb-4 flex flex-wrap gap-2">
+                        <span class="tech-tag bg-orange-500/10 text-orange-400 border-orange-500/20">ESP32</span>
+                        <span class="tech-tag bg-blue-500/10 text-blue-400 border-blue-500/20">C++</span>
+                        <span class="tech-tag bg-green-500/10 text-green-400 border-green-500/20">Blynk</span>
+                    </div>
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Automation</span>
+                    </div>
+                    <h3
+                        class="text-lg font-bold text-white mb-2 leading-tight group-hover:text-purple-400 transition-colors">
+                        Smart Plant Waterer</h3>
+                    <p class="text-xs text-gray-400 font-light leading-relaxed line-clamp-2">Automated irrigation system
+                        with soil moisture sensing and mobile app control.</p>
+                </div>
+            </article>
+
+            <article class="project-card group reveal project-item" hidden onclick="openModal(this)" data-category="iot"
+                data-title="Home Guardian"
+                data-desc="A DIY home security system using Raspberry Pi. Detects motion using PIR sensors and captures images, instantly sending them to the user's Telegram via bot API."
+                data-image="https://images.unsplash.com/photo-1558002038-1091a1661116?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+                data-tech="Raspberry Pi,Python,Telegram API" data-repo="#" data-demo="#">
+                <div class="relative aspect-video overflow-hidden bg-neutral-900 pointer-events-none">
+                    <img src="https://images.unsplash.com/photo-1558002038-1091a1661116?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                        class="w-full h-full object-cover">
+                    <div
+                        class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <span
+                            class="text-xs font-bold tracking-widest uppercase text-white border border-white/50 px-3 py-1 rounded-full backdrop-blur-sm">View
+                            Details</span>
+                    </div>
+                </div>
+                <div class="p-5 border-t border-white/5 flex flex-col pointer-events-none">
+                    <div class="mb-4 flex flex-wrap gap-2">
+                        <span class="tech-tag bg-red-500/10 text-red-400 border-red-500/20">Raspberry Pi</span>
+                        <span class="tech-tag bg-yellow-500/10 text-yellow-400 border-yellow-500/20">Python</span>
+                        <span class="tech-tag bg-blue-500/10 text-blue-400 border-blue-500/20">Telegram API</span>
+                    </div>
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Security</span>
+                    </div>
+                    <h3
+                        class="text-lg font-bold text-white mb-2 leading-tight group-hover:text-purple-400 transition-colors">
+                        Home Guardian</h3>
+                    <p class="text-xs text-gray-400 font-light leading-relaxed line-clamp-2">Motion detection system
+                        that sends instant photo alerts to Telegram bot.</p>
+                </div>
+            </article>
+
+            <!-- PHOTOGRAPHY PROJECTS -->
+            <article class="project-card group reveal project-item" hidden onclick="openModal(this)"
+                data-category="photo" data-title="Urban Geometry"
+                data-desc="A photo series exploring the harsh lines, shadows, and brutalist architecture found in downtown Jakarta. Captured to emphasize the scale of the city against the individual."
+                data-image="https://images.unsplash.com/photo-1493863641943-9b68992a8d07?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+                data-tech="Sony A7III,35mm,Lightroom" data-repo="#" data-demo="#">
+                <div class="relative aspect-video overflow-hidden bg-neutral-900 pointer-events-none">
                     <img src="https://images.unsplash.com/photo-1493863641943-9b68992a8d07?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                        alt="Architecture"
-                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale">
+                        class="w-full h-full object-cover">
                     <div
-                        class="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                         <span
-                            class="px-8 py-3 bg-white text-black rounded-full font-bold text-xs uppercase tracking-widest transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">View
-                            Project →</span>
+                            class="text-xs font-bold tracking-widest uppercase text-white border border-white/50 px-3 py-1 rounded-full backdrop-blur-sm">View
+                            Details</span>
                     </div>
                 </div>
-                <div class="px-2">
-                    <span
-                        class="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] mb-2 block">Photography</span>
+                <div class="p-5 border-t border-white/5 flex flex-col pointer-events-none">
+                    <div class="mb-4 flex flex-wrap gap-2">
+                        <span class="tech-tag bg-white/10 text-gray-300 border-white/20">Sony A7III</span>
+                        <span class="tech-tag bg-blue-500/10 text-blue-300 border-blue-500/20">Jakarta</span>
+                    </div>
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Street</span>
+                        <span class="text-[10px] text-gray-500 font-sans">2023</span>
+                    </div>
                     <h3
-                        class="text-2xl font-bold text-white group-hover:text-gray-300 transition-colors tracking-tight">
-                        Urban
-                        Angles</h3>
-                    <p class="text-gray-400 text-sm mt-3 font-light leading-relaxed line-clamp-2">A photo series
-                        exploring the geometry of
-                        modern architecture in monochrome light.</p>
+                        class="text-lg font-bold text-white mb-2 leading-tight group-hover:text-yellow-400 transition-colors">
+                        Urban Geometry</h3>
+                    <p class="text-xs text-gray-400 font-light leading-relaxed line-clamp-2">A study of lines, shadows,
+                        and modern architecture in downtown Jakarta.</p>
+                </div>
+            </article>
+
+            <article class="project-card group reveal project-item" hidden onclick="openModal(this)"
+                data-category="photo" data-title="Faces of Bandung"
+                data-desc="Capturing the candid moments and diverse faces of people in Bandung. This series focuses on street portraits and the stories they tell through expressions."
+                data-image="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+                data-tech="Fujifilm X-T30,50mm,Capture One" data-repo="#" data-demo="#">
+                <div class="relative aspect-video overflow-hidden bg-neutral-900 pointer-events-none">
+                    <img src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                        class="w-full h-full object-cover">
+                    <div
+                        class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <span
+                            class="text-xs font-bold tracking-widest uppercase text-white border border-white/50 px-3 py-1 rounded-full backdrop-blur-sm">View
+                            Details</span>
+                    </div>
+                </div>
+                <div class="p-5 border-t border-white/5 flex flex-col pointer-events-none">
+                    <div class="mb-4 flex flex-wrap gap-2">
+                        <span class="tech-tag bg-green-500/10 text-green-300 border-green-500/20">Fujifilm X-T30</span>
+                        <span class="tech-tag bg-blue-500/10 text-blue-300 border-blue-500/20">Bandung</span>
+                    </div>
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Portrait</span>
+                    </div>
+                    <h3
+                        class="text-lg font-bold text-white mb-2 leading-tight group-hover:text-yellow-400 transition-colors">
+                        Faces of Bandung</h3>
+                    <p class="text-xs text-gray-400 font-light leading-relaxed line-clamp-2">Capturing the human element
+                        and daily stories in the streets of Bandung.</p>
                 </div>
             </article>
 
         </div>
-    </section>
+    </main>
+
+    <!-- PROFESSIONAL PROJECT MODAL (REDESIGNED) -->
+    <div id="projectModal"
+        class="fixed inset-0 z-[2000] hidden flex items-center justify-center p-4 sm:p-6 opacity-0 pointer-events-none transition-all duration-300">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md transition-opacity" onclick="closeModal()"></div>
+
+        <!-- Content Card -->
+        <div
+            class="modal-content relative w-full max-w-2xl bg-neutral-900 border border-white/10 rounded-3xl overflow-hidden shadow-2xl transform scale-95 transition-all duration-300 flex flex-col max-h-[90vh]">
+
+            <!-- Image Area (Magazine Style Header) -->
+            <div class="relative h-64 sm:h-80 shrink-0 group">
+                <!-- UPDATED: Removed group-hover:scale-105 -->
+                <img id="modalImg" src="" alt="Project Detail"
+                    class="w-full h-full object-cover transition-transform duration-700">
+                <!-- UPDATED GRADIENT: Fixed Bug, now smooth blend to content color -->
+                <div class="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/60 to-transparent"></div>
+
+                <!-- Close Button (Perfectly Symmetrical & Interactive) -->
+                <button onclick="closeModal()"
+                    class="absolute top-4 right-4 z-20 w-10 h-10 flex items-center justify-center bg-black/40 hover:bg-white text-white hover:text-black rounded-full backdrop-blur-md border border-white/10 transition-all duration-300 group-hover:rotate-90 shadow-lg">
+                    <span class="material-symbols-outlined text-xl">close</span>
+                </button>
+
+                <!-- Title & Category Overlay (Floating) -->
+                <div class="absolute bottom-6 left-6 right-6">
+                    <span id="modalCategory"
+                        class="inline-block px-3 py-1 mb-2 text-[10px] font-bold tracking-widest uppercase rounded-full bg-white/10 backdrop-blur-md border border-white/10 shadow-sm">Category</span>
+                    <h2 id="modalTitle"
+                        class="text-3xl sm:text-4xl font-black text-white leading-none tracking-tight shadow-black drop-shadow-lg">
+                        Project Title</h2>
+                </div>
+            </div>
+
+            <!-- Content Area (Clean Layout) -->
+            <div class="p-6 sm:p-8 overflow-y-auto custom-scrollbar bg-neutral-900 flex flex-col h-full">
+                <!-- Tech Stack -->
+                <div id="modalTech" class="flex flex-wrap gap-2 mb-6">
+                    <!-- Tags injected via JS with colors -->
+                </div>
+
+                <!-- Description -->
+                <div class="prose prose-invert max-w-none mb-8">
+                    <h4
+                        class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3 border-b border-white/10 pb-2">
+                        About Project</h4>
+                    <p id="modalDesc" class="text-gray-300 font-light leading-relaxed text-sm sm:text-base">
+                        Description goes here...
+                    </p>
+                </div>
+
+                <!-- Action Buttons -->
+                <div id="modalButtons"
+                    class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-auto pt-6 border-t border-white/10">
+                    <!-- Buttons injected via JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-20 py-8 border-t border-white/5 bg-black/40 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-xs text-gray-500 font-sans tracking-wide">
+                &copy; 2024 Fiqry Firmansyah. All rights reserved.
+            </div>
+
+            <div class="flex gap-6 items-center">
+                <a href="#"
+                    class="text-gray-400 hover:text-white transition-colors duration-300 transform hover:scale-110">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                    </svg>
+                </a>
+                <a href="#"
+                    class="text-gray-400 hover:text-white transition-colors duration-300 transform hover:scale-110">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd"
+                            d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Page Transition: Fade In
-            setTimeout(() => {
-                document.body.classList.add('loaded');
-            }, 100);
+        // --- Modal Logic ---
+        const modal = document.getElementById('projectModal');
 
-            // Page Transition: Fade Out on Click
-            const links = document.querySelectorAll('.transition-link');
-            links.forEach(link => {
+        // Helper to determine color based on tech name
+        const getTechColor = (tech) => {
+            const t = tech.toLowerCase().trim();
+            // Blue/Cyan Theme
+            if (t.includes('react') || t.includes('tailwind') || t.includes('css') || t.includes('telegram'))
+                return 'bg-blue-500/10 text-blue-400 border-blue-500/20';
+            // Green Theme
+            if (t.includes('vue') || t.includes('node') || t.includes('mongo') || t.includes('fuji') || t.includes('blynk'))
+                return 'bg-green-500/10 text-green-400 border-green-500/20';
+            // Yellow/Orange Theme
+            if (t.includes('firebase') || t.includes('stripe') || t.includes('python'))
+                return 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20';
+            // Red/Orange Theme
+            if (t.includes('esp32') || t.includes('raspberry') || t.includes('laravel'))
+                return 'bg-red-500/10 text-red-400 border-red-500/20';
+            // White/Gray Theme
+            if (t.includes('sony') || t.includes('jakarta'))
+                return 'bg-white/10 text-gray-200 border-white/20';
+
+            // Default
+            return 'bg-gray-500/10 text-gray-300 border-gray-500/20';
+        };
+
+        function openModal(card) {
+            // Get Data from Attributes
+            const title = card.getAttribute('data-title');
+            const desc = card.getAttribute('data-desc');
+            const img = card.getAttribute('data-image');
+            const tech = card.getAttribute('data-tech').split(',');
+            const category = card.getAttribute('data-category');
+            const repo = card.getAttribute('data-repo');
+            const demo = card.getAttribute('data-demo');
+
+            // Populate Elements
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalDesc').textContent = desc;
+            document.getElementById('modalImg').src = img;
+
+            // Set Category Label & Color
+            const catLabel = document.getElementById('modalCategory');
+            if (category === 'web') {
+                catLabel.textContent = 'Web Development';
+                catLabel.className = 'inline-block px-3 py-1 mb-2 text-[10px] font-bold tracking-widest uppercase rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 backdrop-blur-md';
+            } else if (category === 'iot') {
+                catLabel.textContent = 'IoT Innovation';
+                catLabel.className = 'inline-block px-3 py-1 mb-2 text-[10px] font-bold tracking-widest uppercase rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20 backdrop-blur-md';
+            } else {
+                catLabel.textContent = 'Photography';
+                catLabel.className = 'inline-block px-3 py-1 mb-2 text-[10px] font-bold tracking-widest uppercase rounded-full bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 backdrop-blur-md';
+            }
+
+            // Populate Tech Tags with Dynamic Colors
+            const techContainer = document.getElementById('modalTech');
+            techContainer.innerHTML = ''; // Clear previous
+            tech.forEach(t => {
+                const tag = document.createElement('span');
+                // Use JetBrains Mono font as requested (font-mono)
+                tag.className = `text-[10px] font-mono font-bold px-3 py-1.5 rounded-lg border uppercase tracking-wider ${getTechColor(t)}`;
+                tag.textContent = t;
+                techContainer.appendChild(tag);
+            });
+
+            // Handle Buttons Logic
+            const btnContainer = document.getElementById('modalButtons');
+            btnContainer.innerHTML = ''; // Clear previous
+
+            if (category === 'photo') {
+                // Photo Button
+                btnContainer.innerHTML = `
+                    <button class="col-span-1 sm:col-span-2 bg-white text-black font-bold py-3.5 px-6 rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 font-sans shadow-lg shadow-white/10">
+                        <span class="material-symbols-outlined text-sm">visibility</span> View High Res
+                    </button>
+                `;
+            } else {
+                // Web/IoT Buttons
+                btnContainer.innerHTML = `
+                    <button class="bg-white text-black font-bold py-3.5 px-6 rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-white/10 font-sans group">
+                        <span class="material-symbols-outlined text-sm transition-transform group-hover:-translate-y-0.5">code</span> Repository
+                    </button>
+                    <button class="border border-white/20 text-white font-bold py-3.5 px-6 rounded-xl hover:bg-white/10 transition-colors flex items-center justify-center gap-2 font-sans group">
+                        <span class="material-symbols-outlined text-sm transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">open_in_new</span> Live Demo
+                    </button>
+                `;
+            }
+
+            // Show Modal
+            modal.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
+            // Animate Content
+            const content = modal.querySelector('.modal-content');
+            setTimeout(() => {
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+
+        function closeModal() {
+            // Animate Content Out
+            const content = modal.querySelector('.modal-content');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+
+            // Hide Modal after animation
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300); // Match transition duration
+
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+
+        // --- Filtering Logic ---
+        function filterProjects(category, element) {
+            const boxes = document.querySelectorAll('.category-btn');
+            boxes.forEach(box => box.classList.remove('active'));
+            element.classList.add('active');
+
+            const items = document.querySelectorAll('.project-item');
+
+            items.forEach(item => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(10px)';
+                setTimeout(() => {
+                    if (item.getAttribute('data-category') === category) {
+                        item.hidden = false;
+                        void item.offsetWidth;
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateY(0)';
+                    } else {
+                        item.hidden = true;
+                    }
+                }, 300);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => { document.body.classList.add('loaded'); }, 100);
+
+            // Link Transitions
+            document.querySelectorAll('.transition-link').forEach(link => {
                 link.addEventListener('click', (e) => {
                     const href = link.getAttribute('href');
                     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
                     if (href === '#' || !href || href === currentPage) return;
-
                     e.preventDefault();
-
-                    // Close menu if open
-                    if (hamburger && menuOverlay) {
-                        hamburger.classList.remove('active');
-                        menuOverlay.classList.remove('active');
-                        document.body.style.overflow = 'auto';
-                    }
-
-                    // Exit Animation
                     document.body.classList.add('exiting');
                     document.body.classList.remove('loaded');
-
-                    setTimeout(() => {
-                        window.location.href = href;
-                    }, 600);
+                    setTimeout(() => { window.location.href = href; }, 600);
                 });
             });
 
-            // Hamburger Menu Logic
+            // Hamburger
             const hamburger = document.getElementById('hamburger');
             const menuOverlay = document.getElementById('menuOverlay');
-            const navbar = document.getElementById('navbar');
-
             if (hamburger && menuOverlay) {
                 hamburger.addEventListener('click', () => {
                     hamburger.classList.toggle('active');
                     menuOverlay.classList.toggle('active');
-
-                    // Prevent scrolling when menu is open
-                    if (menuOverlay.classList.contains('active')) {
-                        document.body.style.overflow = 'hidden';
-                    } else {
-                        document.body.style.overflow = 'auto';
-                    }
+                    if (menuOverlay.classList.contains('active')) document.body.style.overflow = 'hidden';
+                    else document.body.style.overflow = 'auto';
                 });
             }
 
-            // Scroll Handler
+            // Scroll
+            const navbar = document.getElementById('navbar');
             window.addEventListener('scroll', () => {
-                if (window.scrollY > 50) {
-                    navbar.classList.add('scrolled');
-                } else {
-                    navbar.classList.remove('scrolled');
-                }
+                if (window.scrollY > 50) navbar.classList.add('scrolled');
+                else navbar.classList.remove('scrolled');
             });
 
-            // Reveal Animation
-            const revealElements = document.querySelectorAll('.reveal');
-            const revealOnLoad = () => {
-                revealElements.forEach((element) => {
-                    element.classList.add('active');
-                });
-            };
-            setTimeout(revealOnLoad, 100);
-
-            // Filtering
-            const filterButtons = document.querySelectorAll('.filter-btn');
-            const projectItems = document.querySelectorAll('.project-item');
-
-            filterButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    filterButtons.forEach(b => {
-                        b.classList.remove('bg-white', 'text-black');
-                        b.classList.add('bg-white/5', 'text-gray-400', 'border', 'border-white/10');
-                    });
-
-                    btn.classList.remove('bg-white/5', 'text-gray-400', 'border', 'border-white/10');
-                    btn.classList.add('bg-white', 'text-black');
-
-                    const filterValue = btn.getAttribute('data-filter');
-
-                    projectItems.forEach(item => {
-                        if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
-                            item.style.display = 'block';
-                            setTimeout(() => {
-                                item.style.opacity = '1';
-                                item.style.transform = 'translateY(0)';
-                            }, 50);
-                        } else {
-                            item.style.opacity = '0';
-                            item.style.transform = 'translateY(20px)';
-                            setTimeout(() => {
-                                item.style.display = 'none';
-                            }, 400);
-                        }
-                    });
-                });
-            });
+            // Reveal
+            setTimeout(() => {
+                document.querySelectorAll('.reveal').forEach((el) => el.classList.add('active'));
+            }, 100);
         });
     </script>
 </body>
