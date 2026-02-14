@@ -63,6 +63,10 @@
                             '2%, 64%': { transform: 'translate(2px,0) skew(0deg)' },
                             '4%, 60%': { transform: 'translate(-2px,0) skew(0deg)' },
                             '62%': { transform: 'translate(0,0) skew(5deg)' },
+                        },
+                        'bg-gradient-slow': {
+                            '0%, 100%': { backgroundPosition: '0% 50%' },
+                            '50%': { backgroundPosition: '100% 50%' },
                         }
                     }
                 }
@@ -77,6 +81,27 @@
             overflow-x: hidden;
             opacity: 0;
             transition: opacity 0.8s ease-in-out;
+        }
+
+        .bg-animated-gradient {
+            background: linear-gradient(-45deg, #050505, #121212, #262626, #121212);
+            background-size: 400% 400%;
+            animation: bg-gradient-slow 12s ease infinite;
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+        }
+
+        @keyframes bg-gradient-slow {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
         }
 
         body.loaded {
@@ -603,10 +628,202 @@
             color: white;
             border-color: rgba(255, 255, 255, 0.2);
         }
+
+        /* Seamless Transitions */
+        #transitionCurtain {
+            position: fixed;
+            inset: 0;
+            background: #050505;
+            z-index: 9999;
+            transition: opacity 0.6s ease-in-out;
+            pointer-events: none;
+        }
+
+        body.loaded #transitionCurtain {
+            opacity: 0;
+        }
+
+        /* Header Animation */
+        nav {
+            position: fixed;
+            top: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(0);
+            width: auto;
+            min-width: 320px;
+            max-width: 800px;
+            width: 90%;
+            border-radius: 999px;
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-50%) translateY(-100px);
+        }
+
+        body.loaded nav {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        nav.scrolled {
+            top: 1.5rem;
+            background: rgba(5, 5, 5, 0.9);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        body.exiting nav {
+            transform: translateX(-50%) translateY(-100px);
+            opacity: 0;
+        }
+
+        .nav-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 9999px;
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 300ms;
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .nav-icon:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .nav-icon.active {
+            background: #ffffff;
+            color: #000000;
+        }
+
+        /* Minimalist Hamburger */
+        .hamburger {
+            width: 30px;
+            height: 20px;
+            position: relative;
+            cursor: pointer;
+            z-index: 1100;
+        }
+
+        .hamburger span {
+            display: block;
+            position: absolute;
+            height: 2px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 9px;
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+        }
+
+        .hamburger span:nth-child(1) {
+            top: 0px;
+        }
+
+        .hamburger span:nth-child(2) {
+            top: 9px;
+        }
+
+        .hamburger span:nth-child(3) {
+            top: 18px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            top: 9px;
+            transform: rotate(135deg);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+            left: -60px;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            top: 9px;
+            transform: rotate(-135deg);
+        }
+
+        /* Overlay Menu */
+        .menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 5, 5, 0.95);
+            backdrop-filter: blur(25px);
+            z-index: 950;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .menu-links a {
+            font-size: clamp(3rem, 10vw, 5rem);
+            font-weight: 800;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: -0.05em;
+            display: block;
+            margin: 0.5rem 0;
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .menu-overlay.active .menu-links a {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .menu-links a:hover {
+            color: #a3a3a3;
+        }
+
+        .menu-links a:nth-child(1) {
+            transition-delay: 0.1s;
+        }
+
+        .menu-links a:nth-child(2) {
+            transition-delay: 0.2s;
+        }
+
+        .menu-links a:nth-child(3) {
+            transition-delay: 0.3s;
+        }
+
+        .menu-links a:nth-child(4) {
+            transition-delay: 0.4s;
+        }
     </style>
 </head>
 
-<body class="antialiased min-h-screen relative bg-[#050505]">
+<body class="antialiased min-h-screen relative text-white">
+
+    <!-- Transition Curtain -->
+    <div id="transitionCurtain"></div>
+
+    <!-- Fixed Background for Animation -->
+    <div class="bg-animated-gradient"></div>
 
     <!-- Nebula Background -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none">
@@ -666,26 +883,54 @@
                     <span>Kembali</span>
                 </button>
                 <button id="modalYes" class="modal-btn-minimal modal-btn-primary">
-                    <span>Ya, Lanjutkan →</span>
+                    <span>Ya, Lanjutkan</span>
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Minimal Header -->
-    <nav class="fixed w-full z-50 transition-all duration-300 px-6 py-6">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <a href="#" id="logoLink" class="flex items-center gap-2 group cursor-pointer">
-                <img src="logo-edelweiss.png" alt="Fiqry Firmansyah Logo"
-                    class="h-12 w-12 object-contain transition-transform duration-300 group-hover:scale-110">
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="px-6 py-3 flex justify-between items-center gap-12" id="navContainer">
+            <a href="index.html" id="logoLink" class="group cursor-pointer transition-link flex items-center shrink-0">
+                <img src="logo-edelweiss.png" alt="Fiqry Logo"
+                    class="h-10 w-10 object-contain transition-all group-hover:scale-110">
             </a>
-            <a href="mailto:hello@fiqryfirmansyah.com"
-                class="text-sm font-semibold text-gray-300 hover:text-white transition-colors flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 hover:bg-white/10 hover:border-white/30">
-                <span class="material-symbols-outlined text-[18px]">mail</span>
-                Get in Touch
-            </a>
+
+            <!-- Desktop Icon Navigation -->
+            <div class="hidden md:flex items-center gap-3">
+                <a href="index.html" class="nav-icon active transition-link" title="Home">
+                    <span class="material-symbols-outlined text-[20px]">home</span>
+                </a>
+                <a href="about.html" class="nav-icon transition-link" title="About">
+                    <span class="material-symbols-outlined text-[20px]">person</span>
+                </a>
+                <a href="skills.html" class="nav-icon transition-link" title="Skills">
+                    <span class="material-symbols-outlined text-[20px]">bolt</span>
+                </a>
+                <a href="projects.html" class="nav-icon transition-link" title="Projects">
+                    <span class="material-symbols-outlined text-[20px]">layers</span>
+                </a>
+            </div>
+
+            <!-- Mobile Hamburger -->
+            <div class="hamburger md:hidden shrink-0" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
     </nav>
+
+    <!-- Overlay Menu -->
+    <div class="menu-overlay" id="menuOverlay">
+        <div class="menu-links text-left px-6">
+            <a href="index.html" class="transition-link">Home</a>
+            <a href="about.html" class="transition-link">About</a>
+            <a href="skills.html" class="transition-link">Skills</a>
+            <a href="projects.html" class="transition-link">Projects</a>
+        </div>
+    </div>
 
     <!-- Hero Content -->
     <main class="min-h-screen flex flex-col justify-center items-center relative z-10 px-6">
@@ -787,13 +1032,55 @@
             const links = document.querySelectorAll('.transition-link');
             links.forEach(link => {
                 link.addEventListener('click', (e) => {
-                    e.preventDefault();
                     const href = link.getAttribute('href');
+                    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+                    if (href === '#' || !href || href === currentPage) return;
+
+                    e.preventDefault();
+
+                    // Close menu if open
+                    if (hamburger && menuOverlay) {
+                        hamburger.classList.remove('active');
+                        menuOverlay.classList.remove('active');
+                        document.body.style.overflow = 'auto';
+                    }
+
+                    // Exit Animation
+                    document.body.classList.add('exiting');
                     document.body.classList.remove('loaded');
+
                     setTimeout(() => {
                         window.location.href = href;
-                    }, 800);
+                    }, 600);
                 });
+            });
+
+            // Hamburger Menu Logic
+            const hamburger = document.getElementById('hamburger');
+            const menuOverlay = document.getElementById('menuOverlay');
+            const navbar = document.getElementById('navbar');
+
+            if (hamburger && menuOverlay) {
+                hamburger.addEventListener('click', () => {
+                    hamburger.classList.toggle('active');
+                    menuOverlay.classList.toggle('active');
+
+                    // Prevent scrolling when menu is open
+                    if (menuOverlay.classList.contains('active')) {
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+            }
+
+            // Scroll Handler
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
             });
 
             // Reveal Animation
@@ -815,10 +1102,11 @@
 
             modalYes.addEventListener('click', () => {
                 modal.classList.remove('active');
+                document.body.classList.add('exiting');
                 document.body.classList.remove('loaded');
                 setTimeout(() => {
                     window.location.href = 'admin-login.html';
-                }, 800);
+                }, 600);
             });
 
             modalNo.addEventListener('click', () => {
