@@ -11,11 +11,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
+
     <!-- Icons -->
     <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 
-    <!-- Tailwind CSS -->
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
@@ -23,48 +24,6 @@
             font-family: 'Montserrat', sans-serif;
             background-color: #050505;
             color: #ffffff;
-            overflow: hidden;
-            opacity: 0;
-            transition: opacity 0.8s ease-in-out;
-        }
-
-        body.loaded {
-            opacity: 1;
-        }
-
-        /* Seamless Transitions */
-        #transitionCurtain {
-            position: fixed;
-            inset: 0;
-            background: #050505;
-            z-index: 9999;
-            transition: opacity 0.6s ease-in-out;
-            pointer-events: none;
-        }
-
-        body.loaded #transitionCurtain {
-            opacity: 0;
-        }
-
-        .bg-animated-gradient {
-            background: linear-gradient(-45deg, #050505, #121212, #262626, #121212);
-            background-size: 400% 400%;
-            animation: bg-gradient-slow 12s ease infinite;
-            position: fixed;
-            inset: 0;
-            z-index: -2;
-        }
-
-        @keyframes bg-gradient-slow {
-
-            0%,
-            100% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
         }
 
         .glass {
@@ -73,223 +32,94 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .nebula {
-            position: absolute;
-            filter: blur(100px);
-            opacity: 0.15;
-            animation: nebula 10s ease-in-out infinite alternate;
-            z-index: -1;
-        }
-
-        @keyframes nebula {
-            0% {
-                transform: scale(1) translate(0, 0);
-            }
-
-            100% {
-                transform: scale(1.2) translate(20px, -20px);
-            }
-        }
-
         .login-btn {
             background: linear-gradient(135deg, #ffffff, #737373, #171717);
             background-size: 200% 200%;
             color: black;
-            animation: gradient-shift 4s ease-in-out infinite;
             transition: all 0.3s ease;
-        }
-
-        @keyframes gradient-shift {
-
-            0%,
-            100% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
         }
 
         .login-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 12px 30px rgba(255, 255, 255, 0.2);
         }
-
-        .menu-links a:nth-child(4) {
-            transition-delay: 0.4s;
-        }
-
-        /* Back to Home Button (New Centered Design) */
-        .back-home-wrapper {
-            display: flex;
-            justify-content: center;
-            margin-top: 2.5rem;
-            animation: fade-in-up 1s cubic-bezier(0.23, 1, 0.32, 1) both;
-            animation-delay: 0.8s;
-        }
-
-        @keyframes fade-in-up {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .back-home-btn {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 28px;
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(163, 163, 163, 0.8);
-            font-size: 0.7rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .back-home-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s ease;
-        }
-
-        .back-home-btn:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.4);
-            color: #ffffff;
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-            letter-spacing: 0.2em;
-        }
-
-        .back-home-btn:hover::before {
-            transform: translateX(100%);
-        }
-
-        .back-home-btn:hover span {
-            transform: translateX(-5px);
-            color: #ffffff;
-        }
-
-        .back-home-btn span {
-            font-size: 1.1rem;
-            transition: all 0.4s ease;
-            color: rgba(163, 163, 163, 0.8);
-        }
     </style>
 </head>
 
-<body class="min-h-screen flex items-center justify-center relative px-6">
+<body class="min-h-screen flex items-center justify-center px-6">
 
-    <!-- Transition Curtain -->
-    <div id="transitionCurtain"></div>
+    <div class="glass rounded-3xl p-10 max-w-md w-full shadow-2xl">
 
-    <!-- Fixed Background for Animation -->
-    <div class="bg-animated-gradient"></div>
-
-    <!-- Nebula Background -->
-    <div class="fixed inset-0 overflow-hidden pointer-events-none">
-        <div class="nebula w-[600px] h-[600px] bg-white/5 rounded-full top-[-10%] left-[-10%]"></div>
-        <div class="nebula w-[500px] h-[500px] bg-gray-500/5 rounded-full bottom-[-10%] right-[-10%]"></div>
-    </div>
-
-    <div class="glass rounded-[32px] p-12 max-w-md w-full relative z-10 shadow-2xl">
-        <div class="text-center mb-10">
-            <div class="mb-6 inline-block p-4 rounded-2xl bg-white/5 border border-white/10">
-                <img src="logo-edelweiss.png" alt="Fiqry Logo" class="h-16 w-16 object-contain">
-            </div>
-            <h1
-                class="text-4xl font-black mb-2 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-300 to-gray-500">
-                Admin Login
-            </h1>
-            <p class="text-gray-400 text-sm font-light">Welcome back, Fiqry</p>
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold mb-2">Admin Login</h1>
+            <p class="text-gray-400 text-sm">Login to access admin panel</p>
         </div>
 
         <form id="loginForm" class="space-y-6">
+
             <div>
-                <label for="username"
-                    class="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-3 ml-1">Username</label>
+                <label class="block text-xs uppercase text-gray-400 mb-2">Username</label>
                 <input type="text" id="username"
-                    class="w-full px-5 py-4 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-white/30 transition-all font-light"
-                    placeholder="Enter username" required>
+                    class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:outline-none focus:border-white/30"
+                    required>
             </div>
 
-            <div class="mb-8">
-                <label for="password"
-                    class="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-3 ml-1">Password</label>
+            <div>
+                <label class="block text-xs uppercase text-gray-400 mb-2">Password</label>
                 <input type="password" id="password"
-                    class="w-full px-5 py-4 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-white/30 transition-all font-light"
-                    placeholder="Enter password" required>
+                    class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:outline-none focus:border-white/30"
+                    required>
             </div>
 
-            <button type="submit" class="login-btn w-full py-4 rounded-2xl font-bold uppercase tracking-widest text-xs">
+            <button type="submit"
+                class="login-btn w-full py-3 rounded-xl font-bold uppercase text-xs tracking-widest">
                 Access Panel
             </button>
         </form>
 
-        <!-- Back to Home Centered -->
-        <div class="back-home-wrapper">
-            <a href="index.html" class="back-home-btn transition-link">
-                <span class="material-symbols-outlined">west</span>
-                Back to Home
+        <div class="text-center mt-6">
+            <a href="index.html" class="text-gray-500 hover:text-white text-sm">
+                ← Back to Home
             </a>
         </div>
+
     </div>
 
+    <!-- LOGIN SCRIPT -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const loginForm = document.getElementById('loginForm');
-            if (loginForm) {
-                loginForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    alert('Login functionality will be implemented with backend authentication');
-                });
-            }
+        document.addEventListener("DOMContentLoaded", function () {
 
-            // Page Transition: Fade Out on Click
-            const links = document.querySelectorAll('.transition-link');
-            links.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    const href = link.getAttribute('href');
-                    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-                    if (href === '#' || !href || href === currentPage) return;
+            const loginForm = document.getElementById("loginForm");
 
-                    e.preventDefault();
+            loginForm.addEventListener("submit", async function (e) {
+                e.preventDefault();
 
+                const username = document.getElementById("username").value;
+                const password = document.getElementById("password").value;
 
+                try {
+                    const response = await fetch("http://127.0.0.1:8000/login", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ username, password })
+                    });
 
-                    // Exit Animation
-                    document.body.classList.add('exiting');
-                    document.body.classList.remove('loaded');
+                    const data = await response.json();
 
-                    setTimeout(() => {
-                        window.location.href = href;
-                    }, 600);
-                });
+                    if (response.ok) {
+                        localStorage.setItem("token", data.access_token);
+                        window.location.href = "admin.html";
+                    } else {
+                        alert(data.detail || "Login failed");
+                    }
+
+                } catch (error) {
+                    alert("Cannot connect to backend.");
+                }
             });
 
-            // Fade in body
-            setTimeout(() => {
-                document.body.style.opacity = '1';
-                document.body.classList.add('loaded');
-            }, 100);
         });
     </script>
 
