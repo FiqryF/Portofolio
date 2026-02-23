@@ -1,0 +1,27 @@
+--- Creating a project ---
+Status: 200
+Response: {'message': 'Project created successfully', 'id': '699be2013d83a20ce6c31018'}
+
+--- Getting all projects ---
+Status: 200
+Count: len=1
+
+--- Getting single project (699be2013d83a20ce6c31018) ---
+Status: 200
+Response: {'_id': '699be2013d83a20ce6c31018', 'title': 'Test Project', 'description': 'This is a test project', 'image_url': None, 'link': None, 'tags': ['FastAPI', 'MongoDB']}
+
+--- Updating the project ---
+Status: 200
+Response: {'message': 'Project updated successfully'}
+
+--- Verify Update ---
+Status: 200
+Title after update: Updated Test Project
+
+--- Deleting the project ---
+Status: 200
+Response: {'message': 'Project deleted successfully'}
+
+--- Verify Deletion ---
+Status: 404
+Response: {'detail': 'Project not found'}

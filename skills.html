@@ -572,7 +572,43 @@
 
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+
+            // Fetch dynamic skills data
+            try {
+                const res = await fetch("http://127.0.0.1:8001/api/skills/");
+                const items = await res.json();
+
+                const grid = document.querySelector('.grid.grid-cols-1');
+                if (grid && items.length > 0) {
+                    grid.innerHTML = ''; // clear static
+                    items.forEach((item, index) => {
+                        let icon = "code_blocks";
+                        if (item.category === "iot") icon = "hub";
+                        else if (item.category === "tools") icon = "construction";
+
+                        grid.innerHTML += `
+                            <div class="reveal" style="transition-delay: ${index * 0.1}s;">
+                                <div class="skill-card rounded-3xl p-8 h-full flex flex-col group">
+                                    <div class="glow-spot"></div>
+                                    <div class="flex items-center gap-4 mb-6 relative z-10">
+                                        <div class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-300">
+                                            <span class="material-symbols-outlined text-2xl">${icon}</span>
+                                        </div>
+                                        <h3 class="text-xl font-bold tracking-tight uppercase">${item.name}</h3>
+                                    </div>
+                                    <div class="w-full h-px bg-gradient-to-r from-white/20 to-transparent mb-6"></div>
+                                    <div class="mt-auto flex flex-wrap gap-2 relative z-10">
+                                        <span class="skill-tag">${item.category}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+            } catch (e) { console.error("Could not fetch skills", e); }
+
+
             // Page Transition: Fade In
             setTimeout(() => {
                 document.body.classList.add('loaded');
